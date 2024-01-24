@@ -9,27 +9,33 @@ import {
 } from "@mdi/js"; // ikony, které chceme využít
 import CardFooter from "react-bootstrap/esm/CardFooter";
 import Button from "react-bootstrap/esm/Button";
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import "../App.css";
-import Toast from "./Toast";
+
 import { Dialog } from "primereact/dialog";
 import "primereact/resources/themes/saga-blue/theme.css"; // Replace with your chosen theme
 import "primereact/resources/primereact.min.css";
+import { Modal } from "react-bootstrap";
+import { Row } from "react-bootstrap";
+import Col from "react-bootstrap/esm/Col";
 
 function Drink(props) {
   const [deleteRecipeDialog, setDeleteRecipeDialog] = useState(false);
+  const [editRecipeForm, setEditRecipeForm] = useState(false);
+  const [createRecipeForm, setCreateRecipeForm] = useState(false);
+  const [validated, setValidated] = useState(false);
 
   let navigate = useNavigate();
 
   function handleOpen() {
-    console.log("clicked");
-    // to do
-
     navigate("/drinkDetail?id=" + props.id);
   }
+  function handleSubmit() {
+    return;
+  }
 
-  function handleEdit() {
+  function editRecipe() {
     return;
   }
   function deleteRecipe() {
@@ -38,9 +44,6 @@ function Drink(props) {
   const openDeleteRecipeDialog = () => {
     setDeleteRecipeDialog(true);
     console.log(deleteRecipeDialog);
-  };
-  const hideDeleteRecipeDialog = () => {
-    setDeleteRecipeDialog(false);
   };
 
   const deleteRecipeDialogFooter = (
@@ -53,6 +56,22 @@ function Drink(props) {
       </Button>
       <Button
         onClick={deleteRecipe}
+        style={{ marginRight: "10px", backgroundColor: "red" }}
+      >
+        Yes
+      </Button>
+    </React.Fragment>
+  );
+  const editRecipeFormFooter = (
+    <React.Fragment>
+      <Button
+        onClick={() => setEditRecipeForm(false)}
+        style={{ marginRight: "10px", backgroundColor: "grey" }}
+      >
+        No
+      </Button>
+      <Button
+        onClick={editRecipe}
         style={{ marginRight: "10px", backgroundColor: "red" }}
       >
         Yes
@@ -88,7 +107,7 @@ function Drink(props) {
             {props.drink.name}
           </div>
           <Button
-            onClick={handleOpen}
+            onClick={() => setEditRecipeForm(true)}
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.5)",
               border: "2px solid black",
@@ -106,7 +125,7 @@ function Drink(props) {
           </Button>
 
           <Button
-            onClick={openDeleteRecipeDialog}
+            onClick={() => setDeleteRecipeDialog(true)}
             style={{
               backgroundColor: "rgba(255, 255, 255, 0.5)",
               border: "2px solid red",
@@ -146,7 +165,7 @@ function Drink(props) {
         header="Confirmation"
         modal
         footer={deleteRecipeDialogFooter}
-        onHide={hideDeleteRecipeDialog}
+        onHide={() => setDeleteRecipeDialog(false)}
       >
         <div className="confirmation-content">
           <i
@@ -158,6 +177,22 @@ function Drink(props) {
           </span>
         </div>
       </Dialog>
+
+      <Modal show={editRecipeForm} onHide={() => setEditRecipeForm(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit recipe</Modal.Title>
+        </Modal.Header>
+        <Modal.Body></Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
+
+      <Modal show={createRecipeForm} onHide={() => setCreateRecipeForm(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create recipe</Modal.Title>
+        </Modal.Header>
+        <Modal.Body></Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
     </div>
   );
 }

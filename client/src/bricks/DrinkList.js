@@ -6,9 +6,29 @@ import Form from "react-bootstrap/Form";
 import Icon from "@mdi/react";
 import { useState, useMemo } from "react";
 import { mdiTable, mdiViewGridOutline, mdiMagnify } from "@mdi/js";
+import { Col, Modal, Row } from "react-bootstrap";
 
 function DrinkList(props) {
+  const defaultForm = {
+    name: "",
+    author: "",
+    description: "",
+    ingredients: [],
+  };
   const [searchBy, setSearchBy] = useState("");
+  const [createRecipeForm, setCreateRecipeForm] = useState(false);
+  const [formData, setFormData] = useState({
+    defaultForm,
+  });
+
+  // setFormData vrací nově zadané hodnoty uvnitř formuláře. anonymní funkce, do které vstupují výchozí formData je poté pomocí const NewData obohacen o nový zápis do formuláře, a následně jsou tyto NewData vráceny do setForData statu...
+  const setField = (name, val) => {
+    return setFormData((formData) => {
+      const newData = { ...formData };
+      newData[name] = val;
+      return newData;
+    });
+  };
 
   //definuje proměnnou filteredDrinkList, tedy ty recepty, které uživatel vyhledává v searchbaru (pokud nevyhledává nic, definuje je jako všechny recepty)
   const filteredDrinkList = useMemo(() => {
@@ -57,9 +77,11 @@ function DrinkList(props) {
       <Navbar bg="light">
         <div className="container-fluid">
           <Navbar.Brand>List of drinks</Navbar.Brand>
-          <div>
+          <div className="d-flex gap-2">
+            <Button onClick={() => setCreateRecipeForm(true)}>
+              Create recipe
+            </Button>
             <Form className="d-flex" onSubmit={handleSearch}>
-              <Button>Create recipe</Button>
               <Form.Control
                 id={"searchInput"}
                 style={{ maxWidth: "150px" }}
@@ -80,6 +102,110 @@ function DrinkList(props) {
         </div>
       </Navbar>
       {getDrinkList(filteredDrinkList)}
+
+      <Modal
+        show={createRecipeForm}
+        onHide={() => setCreateRecipeForm(false)}
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Create recipe</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group className="mb-3">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              type="text"
+              value={formData.name}
+              onChange={(e) => setField("description", e.target.value)}
+              maxLength={25}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Write from 1 to 25 characters
+            </Form.Control.Feedback>
+
+            <Form.Label>Author</Form.Label>
+            <Form.Control
+              type="text"
+              value={formData.author}
+              onChange={(e) => setField("description", e.target.value)}
+              maxLength={30}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Write from 1 to 25 characters
+            </Form.Control.Feedback>
+            <Form.Label>Procedure</Form.Label>
+            <Form.Control
+              type="text"
+              value={formData.procedure}
+              onChange={(e) => setField("description", e.target.value)}
+              maxLength={150}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Write from 1 to 25 characters
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Row>
+            <Form.Group as={Col} className="mb-3">
+              <Form.Label>Ingredient</Form.Label>
+              <Form.Select
+                value={formData.weight}
+                onChange={(e) => setField("weight", Number(e.target.value))}
+                required
+              >
+                <option value="" disabled>
+                  Ingredient
+                </option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group as={Col} className="mb-3">
+              <Form.Label>Amount</Form.Label>
+              <Form.Control
+                type="number"
+                value={formData.amount}
+                onChange={(e) => setField("description", e.target.value)}
+                maxLength={150}
+                required
+              />
+            </Form.Group>
+            <Form.Group as={Col} className="mb-3">
+              <Form.Label>Unit</Form.Label>
+              <Form.Select
+                value={formData.unit}
+                onChange={(e) => setField("weight", Number(e.target.value))}
+                required
+              >
+                <option value="" disabled>
+                  Unit
+                </option>
+                <option value={"g"}>g</option>
+                <option value={"špetka"}>špetka</option>
+                <option value={"lžička"}>lžička</option>
+                <option value={"ml"}>ml</option>
+              </Form.Select>
+            </Form.Group>
+          </Row>
+        </Modal.Body>
+        <Modal.Footer>
+          <div className="d-flex flex-row justify-content-between align-items-center w-100">
+            <div className="d-flex flex-row gap-2">
+              <Button
+                variant="secondary"
+                onClick={() => setCreateRecipeForm(false)}
+              >
+                Close
+              </Button>
+              <Button variant="primary" type="submit">
+                Create
+              </Button>
+            </div>
+          </div>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
