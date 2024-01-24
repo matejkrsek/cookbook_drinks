@@ -1,7 +1,7 @@
 .App {
-  margin: 20px;
+  padding-top: 60px;
+  margin: 16px;
 }
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

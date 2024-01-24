@@ -2,20 +2,30 @@ import React from "react";
 import Card from "react-bootstrap/Card"; // import komponenty Card
 import Icon from "@mdi/react"; // komponenta, kterou budeme používat pro zobrazení ikony
 import { mdiAccountSchoolOutline, mdiGlassCocktail } from "@mdi/js"; // ikony, které chceme využít
+import CardFooter from "react-bootstrap/esm/CardFooter";
+import Button from "react-bootstrap/esm/Button";
+import { useNavigate } from "react-router-dom";
 
 function Drink(props) {
+  let navigate = useNavigate();
+
+  function handleOpen() {
+    console.log("clicked");
+    // to do
+
+    navigate("/drinkDetail?id=" + props.id);
+  }
+
   return (
     <Card
       style={{
-        width: "25%", // Set the fixed width of each drink item to 20%
         // Include padding and border in the width
         padding: "8px", // Add padding for better spacing
         boxSizing: "border-box",
         margin: "20px",
-        maxHeight: "40vh", // Set the maximum height to 25% of the viewport height
-        overflow: "hidden",
-        minWidth: "250px",
-        minHeight: "200px",
+        // overflow: "hidden",
+        width: "300px",
+        height: "350px",
         borderColor: "black",
         borderWidth: 3,
         borderRadius: 10,
@@ -37,6 +47,9 @@ function Drink(props) {
         </div>
         <div>{props.drink.description}</div>
       </Card.Body>
+      <CardFooter>
+        <Button onClick={handleOpen}>Open</Button>
+      </CardFooter>
     </Card>
   );
 }

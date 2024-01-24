@@ -10,6 +10,7 @@ import { mdiTable, mdiViewGridOutline, mdiMagnify } from "@mdi/js";
 function DrinkList(props) {
   const [searchBy, setSearchBy] = useState("");
 
+  //definuje proměnnou filteredDrinkList, tedy ty recepty, které uživatel vyhledává v searchbaru (pokud nevyhledává nic, definuje je jako všechny recepty)
   const filteredDrinkList = useMemo(() => {
     return props.drinkList.filter((item) => {
       return (
@@ -21,20 +22,34 @@ function DrinkList(props) {
     });
   }, [searchBy]);
 
+  //vyhledávání (search bar)
   function handleSearch(searchData) {
     searchData.preventDefault();
     // = vezmi searchData, tedy všechno, co bylo zadáno do formuláře, zaměř se na searchInput (.target["searchInput"]) a vem jeho hodnotu (.value). Tu nastav jako setSeatchBy...
     setSearchBy(searchData.target["searchInput"].value);
   }
-
+  //vyhledávání (search bar) 2
   function handleSearchDelete(event) {
     if (!event.target.value) setSearchBy("");
   }
 
+  // funkce pro zobrazení receptů pomocí propsy drinkList (recepty z této proměnné ty zobrazí)
+
   function getDrinkList(drinkList) {
-    return drinkList.map((drink) => {
-      return <Drink key={drink.id} drink={drink} />;
-    });
+    return (
+      <div class="row">
+        {drinkList.map((drink) => {
+          return (
+            <div
+              class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3"
+              style={{ paddingBottom: "8px" }}
+            >
+              <Drink key={drink.id} drink={drink} />
+            </div>
+          );
+        })}
+      </div>
+    );
   }
 
   return (
@@ -44,6 +59,7 @@ function DrinkList(props) {
           <Navbar.Brand>List of drinks</Navbar.Brand>
           <div>
             <Form className="d-flex" onSubmit={handleSearch}>
+              <Button>Create recipe</Button>
               <Form.Control
                 id={"searchInput"}
                 style={{ maxWidth: "150px" }}
@@ -63,17 +79,7 @@ function DrinkList(props) {
           </div>
         </div>
       </Navbar>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap", // Allow items to wrap to the next row
-          margin: "0 auto",
-          maxWidth: "80%",
-          justifyContent: "space-evenly",
-        }}
-      >
-        {getDrinkList(filteredDrinkList)}
-      </div>
+      {getDrinkList(filteredDrinkList)}
     </div>
   );
 }
