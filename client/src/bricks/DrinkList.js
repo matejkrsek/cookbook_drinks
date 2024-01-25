@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Drink from "./Drink";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
@@ -15,11 +15,26 @@ function DrinkList(props) {
     description: "",
     ingredients: [],
   };
+
   const [searchBy, setSearchBy] = useState("");
   const [createRecipeForm, setCreateRecipeForm] = useState(false);
   const [formData, setFormData] = useState({
     defaultForm,
   });
+  const [drinkList, setDrinkList] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:3001/api/drinks/`, {
+      method: "GET",
+      //   headers: {
+      //   "Content-Type": "application/json",
+      //  },
+    }).then(async (response) => {
+      const serverDrinkList = await response.json();
+      setDrinkList(serverDrinkList);
+      console.log(serverDrinkList);
+    });
+  }, []);
 
   // setFormData vrací nově zadané hodnoty uvnitř formuláře. anonymní funkce, do které vstupují výchozí formData je poté pomocí const NewData obohacen o nový zápis do formuláře, a následně jsou tyto NewData vráceny do setForData statu...
   const setField = (name, val) => {
@@ -32,7 +47,7 @@ function DrinkList(props) {
 
   //definuje proměnnou filteredDrinkList, tedy ty recepty, které uživatel vyhledává v searchbaru (pokud nevyhledává nic, definuje je jako všechny recepty)
   const filteredDrinkList = useMemo(() => {
-    return props.drinkList.filter((item) => {
+    return drinkList.filter((item) => {
       return (
         item.name.toLocaleLowerCase().includes(searchBy.toLocaleLowerCase()) ||
         item.description
@@ -40,7 +55,7 @@ function DrinkList(props) {
           .includes(searchBy.toLocaleLowerCase())
       );
     });
-  }, [searchBy]);
+  }, [searchBy, drinkList]);
 
   //vyhledávání (search bar)
   function handleSearch(searchData) {
@@ -101,6 +116,7 @@ function DrinkList(props) {
           </div>
         </div>
       </Navbar>
+
       {getDrinkList(filteredDrinkList)}
 
       <Modal

@@ -186,13 +186,7 @@ function Drink(props) {
         <Modal.Footer></Modal.Footer>
       </Modal>
 
-      <Modal show={createRecipeForm} onHide={() => setCreateRecipeForm(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Create recipe</Modal.Title>
-        </Modal.Header>
-        <Modal.Body></Modal.Body>
-        <Modal.Footer></Modal.Footer>
-      </Modal>
+     
     </div>
   );
 }
