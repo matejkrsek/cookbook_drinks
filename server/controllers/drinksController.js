@@ -3,9 +3,8 @@ const { v4: uuidv4 } = require("uuid");
 let drinks = [
   {
     author: "Vlado Gurčo",
-    name: "Bloody Marry",
-    description:
-      "Tenndus anmremainnining sker including versions of Lorem Ipsum",
+    name: "Bloody MarrX",
+    procedure: "Tenndus anmremainnining sker including versions of Lorem Ipsum",
     id: "8fd09f3f5e2b4l23",
     ingredients: [
       { name: "vodka", amount: "100", unit: "ml", id: "8fd09f3f5e2b4l24" },
@@ -20,8 +19,8 @@ let drinks = [
   },
   {
     author: "Slender Man",
-    name: "Bloody Marry",
-    description:
+    name: "Blood Marry",
+    procedure:
       "Tento recept pochází z daléke Indie em Ipsum has been the industry's",
     id: "8fdq9f3f5e2b4324",
     ingredients: [
@@ -33,7 +32,7 @@ let drinks = [
   {
     author: "Slender Man",
     name: "Vomit Master",
-    description:
+    procedure:
       "Tand scramblep publishing software like Aldus PageMaker including versions of Lorem Ipsum",
     id: "8fd09f3f5emb4324",
     ingredients: [
@@ -44,8 +43,8 @@ let drinks = [
   },
   {
     author: "Slender Man",
-    name: "Bloody Marry",
-    description:
+    name: "Bladdy Marry",
+    procedure:
       "Tento recept pochází z daléke Indie em Ipsum has been the industry's s",
     id: "8fd09y3f5e2b4324",
     ingredients: [
@@ -56,8 +55,8 @@ let drinks = [
   },
   {
     author: "Sluss Man",
-    name: "Bloody Marry",
-    description:
+    name: "Lomody Marry",
+    procedure:
       "Tento recept pochází z daléke Indie em Ipsum has been the industry's standard dummy te",
     id: "8fd09n3f5e2b4324",
     ingredients: [
@@ -69,44 +68,44 @@ let drinks = [
   {
     author: "Slender WoMan",
     name: "Bloody MarryJane",
-    description: "Tento recept pe 1500s, psum",
+    procedure: "Tento recept pe 1500s, psum",
     id: "8fd09f3fte2b4324",
   },
   {
     author: " Mann",
-    name: "Bloody Marry",
-    description: "Tento rons of Lorem Ipsum",
+    name: "BloAdy Marry",
+    procedure: "Tento rons of Lorem Ipsum",
     id: "8fd0ef3f5e2b4324",
   },
   {
     author: "SlSMan",
     name: "Bloody MarryX",
-    description: "Tento recept pochází z daléke Ike a tyt of Lorem Ipsum",
+    procedure: "Tento recept pochází z daléke Ike a tyt of Lorem Ipsum",
     id: "8fd09f3fae2b4324",
   },
   {
     author: "Tichá Bára",
-    name: "Bloody Queen",
-    description: "Tento recept pochází z daléke Iversions of Lorem Ipsum",
+    name: "Bloody Queenys",
+    procedure: "Tento recept pochází z daléke Iversions of Lorem Ipsum",
     id: "8fd09f3f5e2b2324",
   },
   {
     author: "Vlado Gurčoy",
     name: "Great Marry",
-    description:
+    procedure:
       "Tento pri publishing software like Aldus PageMaker including versions of Lorem Ipsum",
     id: "8fd09f3f5e2b4322",
   },
   {
     author: "Vladoslav Gurčo",
     name: "Great Marradith",
-    description: "Tento a gaf Lorem Ipsum",
+    procedure: "Tento a gaf Lorem Ipsum",
     id: "8fd09f3f5e2b4321",
   },
   {
     author: "Vlado Gurčo",
     name: "Flex Marradith",
-    description:
+    procedure:
       "Tento recept pocháver since the 1500s, whenlike Aldus PageMaker including versions of Lorem Ipsum",
     id: "8fd09f3f5e2b4326",
   },
@@ -114,19 +113,19 @@ let drinks = [
   {
     author: "Vladok Gurčo",
     name: "Bloody Susan",
-    description: "Tento recept pochk ap in of Lorem Ipsum",
+    procedure: "Tento recept pochk ap in of Lorem Ipsum",
     id: "8fd09f3f5e2b4327",
   },
   {
     author: "Vlado Gurčo",
     name: "Rainy TEMPLE",
-    description: "Tenons of Lorem Ipsum",
+    procedure: "Tenons of Lorem Ipsum",
     id: "8fd09f3f5e2b4320",
   },
   {
     author: "GARLAK",
     name: "Rainy day",
-    description: "Tenons of Lorem Ipsum",
+    procedure: "Tenons of Lorem Ipsum",
     id: "8fd09f3f5e2b4320",
   },
 ]; // in-memory databáze
@@ -141,11 +140,11 @@ const drinksController = {
     res.json(drink);
   },
   createDrink: (req, res) => {
-    const { author, name, description } = req.body;
-    if (!author || !name || !description) {
+    const { author, name, procedure, ingredients } = req.body;
+    if (!author || !name || !procedure || !ingredients) {
       return res.status(400).send("Missing required fields");
     }
-    const newDrink = { id: uuidv4(), author, name, description };
+    const newDrink = { id: uuidv4(), author, name, procedure, ingredients };
     drinks.push(newDrink);
     res.status(201).json(newDrink);
   },
@@ -153,10 +152,10 @@ const drinksController = {
     const drink = drinks.find((d) => d.id === req.params.id);
     if (!drink) return res.status(404).send("Drink not found");
 
-    const { author, name, description } = req.body;
+    const { author, name, procedure } = req.body;
     if (author) drink.author = author;
     if (name) drink.name = name;
-    if (description) drink.description = description;
+    if (procedure) drink.procedure = procedure;
 
     res.json(drink);
   },

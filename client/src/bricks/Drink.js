@@ -35,6 +35,21 @@ function Drink(props) {
     return;
   }
 
+  function handleDelete(recipeID) {
+    setDeleteRecipeDialog(false);
+    return fetch(`http://localhost:3001/api/drinks/${recipeID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(async (response) => {
+      //const newDrinkList = [...drinkList];
+      /// const newRecipe = await response.json();
+      // newDrinkList.push(newRecipe);
+      // setDrinkList(newDrinkList);
+    });
+  }
+
   function editRecipe() {
     return;
   }
@@ -55,7 +70,7 @@ function Drink(props) {
         No
       </Button>
       <Button
-        onClick={deleteRecipe}
+        onClick={() => handleDelete(props.drink.id)}
         style={{ marginRight: "10px", backgroundColor: "red" }}
       >
         Yes
@@ -95,51 +110,60 @@ function Drink(props) {
           borderRadius: 10,
         }}
       >
-        <CardHeader style={{ display: "flex", gap: "10px" }}>
+        <CardHeader style={{ display: "flex", gap: "5px" }}>
           <div
             style={{
               fontWeight: "bold",
               fontSize: "large",
-              marginRight: "20px",
+              //marginRight: "20px",
             }}
           >
             <Icon path={mdiGlassCocktail} size={1} color="grey" />{" "}
             {props.drink.name}
           </div>
-          <Button
-            onClick={() => setEditRecipeForm(true)}
+          <div
             style={{
-              backgroundColor: "rgba(255, 255, 255, 0.5)",
-              border: "2px solid black",
-              borderRadius: "50%",
-              padding: "5px",
-              width: "30px",
-              height: "30px",
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              alignItems: "start",
+              justifyContent: "flex-end",
+              gap: "5px",
             }}
           >
-            {" "}
-            <Icon path={mdiPencilOutline} size={1} color="black" />
-          </Button>
+            <Button
+              onClick={() => setEditRecipeForm(true)}
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                border: "2px solid black",
+                borderRadius: "50%",
+                padding: "5px",
+                width: "30px",
+                height: "30px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {" "}
+              <Icon path={mdiPencilOutline} size={1} color="black" />
+            </Button>
 
-          <Button
-            onClick={() => setDeleteRecipeDialog(true)}
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.5)",
-              border: "2px solid red",
-              borderRadius: "50%",
-              padding: "5px",
-              width: "30px",
-              height: "30px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Icon path={mdiDelete} size={0.8} color="red" />
-          </Button>
+            <Button
+              onClick={() => setDeleteRecipeDialog(true)}
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                border: "2px solid red",
+                borderRadius: "50%",
+                padding: "5px",
+                width: "30px",
+                height: "30px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Icon path={mdiDelete} size={0.8} color="red" />
+            </Button>
+          </div>
         </CardHeader>
         <Card.Body>
           <div
@@ -151,7 +175,7 @@ function Drink(props) {
           >
             {"Author: "} {props.drink.author}
           </div>
-          <div>{props.drink.description}</div>
+          <div>{props.drink.procedure}</div>
         </Card.Body>
         <CardFooter>
           <Button onClick={handleOpen}>Open</Button>
@@ -185,8 +209,6 @@ function Drink(props) {
         <Modal.Body></Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>
-
-     
     </div>
   );
 }
