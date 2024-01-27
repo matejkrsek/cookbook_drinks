@@ -178,7 +178,7 @@ function Drink(props) {
           <div>{props.drink.procedure}</div>
         </Card.Body>
         <CardFooter>
-          <Button onClick={handleOpen}>Open</Button>
+          <Button onClick={handleOpen}>Read more</Button>
         </CardFooter>
       </Card>
 
