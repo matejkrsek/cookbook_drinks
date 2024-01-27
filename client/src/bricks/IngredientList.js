@@ -1,7 +1,7 @@
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toolbar } from "primereact/toolbar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "primereact/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
@@ -9,17 +9,21 @@ import { Dialog } from "primereact/dialog";
 import { Modal } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 
-const mockIngredients = [
-  { name: "cukr", id: "1" },
-  { name: "mléko", id: "2" },
-  { name: "jin", id: "3" },
-  { name: "tonic", id: "45" },
-  { name: "voda", id: "86" },
-  { name: "rum", id: "46" },
-];
-
 function IngredientList() {
   const [newIngredientDialog, setNewIngredientDialog] = useState(false);
+  const [ingredientsList, setIngredientsList] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:3001/api/ingredients/`, {
+      method: "GET",
+    }).then(async (response) => {
+      const serverIngredientsList = await response.json();
+      setIngredientsList(serverIngredientsList);
+      // console.log(ingredientsList);
+      // console.log(response);
+      console.log(serverIngredientsList);
+    });
+  }, []);
 
   const actionBodyTemplate = (rowData) => {
     return (
@@ -77,7 +81,7 @@ function IngredientList() {
         <Toolbar className="mb-4" end={toolbarEnd} />
         <DataTable
           //  ref={dt}
-          value={mockIngredients}
+          value={ingredientsList}
           dataKey="id"
           paginator
           rows={10}

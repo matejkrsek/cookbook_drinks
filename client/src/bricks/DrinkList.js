@@ -16,6 +16,7 @@ function DrinkList() {
   const [validated, setValidated] = useState(false);
   const [searchBy, setSearchBy] = useState("");
   const [createRecipeForm, setCreateRecipeForm] = useState(false);
+  const [ingredientsList, setIngredientsList] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     author: "",
@@ -61,10 +62,20 @@ function DrinkList() {
       //   headers: {
       //   "Content-Type": "application/json",
       //  },
-    }).then(async (response) => {
-      const serverDrinkList = await response.json();
-      setDrinkList(serverDrinkList);
-    });
+    })
+      .then(async (response) => {
+        const serverDrinkList = await response.json();
+        setDrinkList(serverDrinkList);
+      })
+      .then(
+        fetch(`http://localhost:3001/api/ingredients/`, {
+          method: "GET",
+        }).then(async (response) => {
+          const serverIngredientList = await response.json();
+          setIngredientsList(serverIngredientList);
+          console.log(drinkList);
+        })
+      );
   }, []);
 
   // setFormData vrací nově zadané hodnoty uvnitř formuláře. anonymní funkce, do které vstupují výchozí formData je poté pomocí const NewData obohacen o nový zápis do formuláře, a následně jsou tyto NewData vráceny do setForData statu...
@@ -259,16 +270,20 @@ function DrinkList() {
                 <Form.Label>Ingredient</Form.Label>
                 <Form.Select
                   type="text"
-                  // value={formData.ingredients[0].name}
-                  value="máslo"
+                  value={formData.ingredients[0].name}
                   onChange={(e) =>
-                    setField("ingredients[1].name", e.target.value)
+                    setField("ingredients[0].name", e.target.value)
                   }
                   required
                 >
-                  <option value="máslo" disabled>
-                    Ingredient
+                  <option value="" disabled>
+                    Select an ingredient
                   </option>
+                  {ingredientsList.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.name}>
+                      {ingredient.name}
+                    </option>
+                  ))}
                 </Form.Select>
               </Form.Group>
               <Form.Group as={Col} className="mb-3">
@@ -298,6 +313,7 @@ function DrinkList() {
                   <option value={"špetka"}>špetka</option>
                   <option value={"lžička"}>lžička</option>
                   <option value={"ml"}>ml</option>
+                  <option value={"cube"}>cube</option>
                 </Form.Select>
               </Form.Group>
             </Row>
@@ -307,16 +323,20 @@ function DrinkList() {
                 <Form.Label>Ingredient</Form.Label>
                 <Form.Select
                   type="text"
-                  // value={formData.ingredients[0].name}
-                  value="máslo"
+                  value={formData.ingredients[1].name}
                   onChange={(e) =>
-                    setField("ingredients[1].name", Number(e.target.value))
+                    setField("ingredients[1].name", e.target.value)
                   }
                   required
                 >
-                  <option value="máslo" disabled>
-                    Ingredient
+                  <option value="" disabled>
+                    Select an ingredient
                   </option>
+                  {ingredientsList.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.name}>
+                      {ingredient.name}
+                    </option>
+                  ))}
                 </Form.Select>
               </Form.Group>
               <Form.Group as={Col} className="mb-3">
@@ -346,6 +366,7 @@ function DrinkList() {
                   <option value={"špetka"}>špetka</option>
                   <option value={"lžička"}>lžička</option>
                   <option value={"ml"}>ml</option>
+                  <option value={"cube"}>cube</option>
                 </Form.Select>
               </Form.Group>
             </Row>
@@ -354,15 +375,19 @@ function DrinkList() {
                 <Form.Label>Ingredient</Form.Label>
                 <Form.Select
                   type="text"
-                  // value={formData.ingredients[0].name}
-                  value="máslo"
+                  value={formData.ingredients[2].name}
                   onChange={(e) =>
-                    setField("ingredients[1].name", Number(e.target.value))
+                    setField("ingredients[2].name", e.target.value)
                   }
                 >
-                  <option value="máslo" disabled>
-                    Ingredient
+                  <option value="" disabled>
+                    Select an ingredient
                   </option>
+                  {ingredientsList.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.name}>
+                      {ingredient.name}
+                    </option>
+                  ))}
                 </Form.Select>
               </Form.Group>
               <Form.Group as={Col} className="mb-3">
@@ -390,6 +415,7 @@ function DrinkList() {
                   <option value={"špetka"}>špetka</option>
                   <option value={"lžička"}>lžička</option>
                   <option value={"ml"}>ml</option>
+                  <option value={"cube"}>cube</option>
                 </Form.Select>
               </Form.Group>
             </Row>
@@ -398,15 +424,19 @@ function DrinkList() {
                 <Form.Label>Ingredient</Form.Label>
                 <Form.Select
                   type="text"
-                  // value={formData.ingredients[0].name}
-                  value="máslo"
+                  value={formData.ingredients[3].name}
                   onChange={(e) =>
-                    setField("ingredients[1].name", Number(e.target.value))
+                    setField("ingredients[3].name", e.target.value)
                   }
                 >
-                  <option value="máslo" disabled>
-                    Ingredient
+                  <option value="" disabled>
+                    Select an ingredient
                   </option>
+                  {ingredientsList.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.name}>
+                      {ingredient.name}
+                    </option>
+                  ))}
                 </Form.Select>
               </Form.Group>
               <Form.Group as={Col} className="mb-3">
@@ -434,6 +464,7 @@ function DrinkList() {
                   <option value={"špetka"}>špetka</option>
                   <option value={"lžička"}>lžička</option>
                   <option value={"ml"}>ml</option>
+                  <option value={"cube"}>cube</option>
                 </Form.Select>
               </Form.Group>
             </Row>
@@ -442,15 +473,19 @@ function DrinkList() {
                 <Form.Label>Ingredient</Form.Label>
                 <Form.Select
                   type="text"
-                  // value={formData.ingredients[0].name}
-                  value="máslo"
+                  value={formData.ingredients[4].name}
                   onChange={(e) =>
-                    setField("ingredients[1].name", Number(e.target.value))
+                    setField("ingredients[4].name", e.target.value)
                   }
                 >
-                  <option value="máslo" disabled>
-                    Ingredient
+                  <option value="" disabled>
+                    Select an ingredient
                   </option>
+                  {ingredientsList.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.name}>
+                      {ingredient.name}
+                    </option>
+                  ))}
                 </Form.Select>
               </Form.Group>
               <Form.Group as={Col} className="mb-3">
@@ -478,6 +513,7 @@ function DrinkList() {
                   <option value={"špetka"}>špetka</option>
                   <option value={"lžička"}>lžička</option>
                   <option value={"ml"}>ml</option>
+                  <option value={"cube"}>cube</option>
                 </Form.Select>
               </Form.Group>
             </Row>
@@ -486,15 +522,19 @@ function DrinkList() {
                 <Form.Label>Ingredient</Form.Label>
                 <Form.Select
                   type="text"
-                  // value={formData.ingredients[0].name}
-                  value="máslo"
+                  value={formData.ingredients[5].name}
                   onChange={(e) =>
-                    setField("ingredients[1].name", Number(e.target.value))
+                    setField("ingredients[5].name", e.target.value)
                   }
                 >
-                  <option value="máslo" disabled>
-                    Ingredient
+                  <option value="" disabled>
+                    Select an ingredient
                   </option>
+                  {ingredientsList.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.name}>
+                      {ingredient.name}
+                    </option>
+                  ))}
                 </Form.Select>
               </Form.Group>
               <Form.Group as={Col} className="mb-3">
@@ -522,6 +562,7 @@ function DrinkList() {
                   <option value={"špetka"}>špetka</option>
                   <option value={"lžička"}>lžička</option>
                   <option value={"ml"}>ml</option>
+                  <option value={"cube"}>cube</option>
                 </Form.Select>
               </Form.Group>
             </Row>

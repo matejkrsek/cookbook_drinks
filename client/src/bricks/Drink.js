@@ -25,12 +25,9 @@ function Drink(props) {
   const [editRecipeForm, setEditRecipeForm] = useState(false);
   const [createRecipeForm, setCreateRecipeForm] = useState(false);
   const [validated, setValidated] = useState(false);
-
+  const [drinkDetail, setDrinkDetail] = useState(false);
   let navigate = useNavigate();
 
-  function handleOpen() {
-    navigate("/drinkDetail?id=" + props.id);
-  }
   function handleSubmit() {
     return;
   }
@@ -93,6 +90,25 @@ function Drink(props) {
       </Button>
     </React.Fragment>
   );
+
+  const renderIngredients = () => {
+    const ingredientsJSX = [];
+
+    for (let i = 0; i < 6; i++) {
+      if (props.drink.ingredients[i].name !== "") {
+        ingredientsJSX.push(
+          <div key={i}>
+            {props.drink.ingredients[i].name}
+            {"      "}
+            {props.drink.ingredients[i].amount}{" "}
+            {props.drink.ingredients[i].unit}
+          </div>
+        );
+      }
+    }
+
+    return ingredientsJSX;
+  };
 
   return (
     <div>
@@ -178,7 +194,7 @@ function Drink(props) {
           <div>{props.drink.procedure}</div>
         </Card.Body>
         <CardFooter>
-          <Button onClick={handleOpen}>Read more</Button>
+          <Button onClick={() => setDrinkDetail(true)}>Read more</Button>
         </CardFooter>
       </Card>
 
@@ -209,6 +225,29 @@ function Drink(props) {
         <Modal.Body></Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>
+
+      <Dialog
+        visible={drinkDetail}
+        style={{ width: "32rem" }}
+        breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+        header={props.drink.name}
+        modal
+        onHide={() => setDrinkDetail(false)}
+      >
+        <div className="confirmation-content">
+          <i
+            className="pi pi-exclamation-triangle mr-3"
+            style={{ fontSize: "2rem" }}
+          />
+          <div></div>
+          <div>Author: {props.drink.author}</div>
+          <br></br>
+          <div>Procedure: {props.drink.procedure}</div>
+          <br></br>
+          <div>Ingredients:</div>
+          {renderIngredients()}
+        </div>
+      </Dialog>
     </div>
   );
 }
