@@ -156,6 +156,7 @@ const drinksController = {
     if (author) drink.author = author;
     if (name) drink.name = name;
     if (procedure) drink.procedure = procedure;
+    if (ingredients) drink.ingredients = ingredients;
 
     res.json(drink);
   },
