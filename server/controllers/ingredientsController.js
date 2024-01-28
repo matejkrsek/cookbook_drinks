@@ -50,11 +50,11 @@ const ingredientsController = {
     res.json(ingredient);
   },
   createIngredient: (req, res) => {
-    const { name, amount, unit } = req.body;
-    if (!name || !amount || !unit) {
+    const { name, unit } = req.body;
+    if (!name || !unit) {
       return res.status(400).send("Missing required fields");
     }
-    const newIngredient = { id: uuidv4(), name, amount, unit };
+    const newIngredient = { id: uuidv4(), name, unit };
     ingredients.push(newIngredient);
     res.status(201).json(newIngredient);
   },
