@@ -17,6 +17,7 @@ function DrinkList() {
   const [searchBy, setSearchBy] = useState("");
   const [createRecipeForm, setCreateRecipeForm] = useState(false);
   const [ingredientsList, setIngredientsList] = useState([]);
+  const [drinkList, setDrinkList] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     author: "",
@@ -54,7 +55,6 @@ function DrinkList() {
       },
     ],
   });
-  const [drinkList, setDrinkList] = useState([]);
 
   useEffect(() => {
     fetch(`http://localhost:3001/api/drinks/`, {
@@ -73,13 +73,12 @@ function DrinkList() {
         }).then(async (response) => {
           const serverIngredientList = await response.json();
           setIngredientsList(serverIngredientList);
-          console.log(drinkList);
         })
       );
   }, []);
 
   // setFormData vrací nově zadané hodnoty uvnitř formuláře. anonymní funkce, do které vstupují výchozí formData je poté pomocí const NewData obohacen o nový zápis do formuláře, a následně jsou tyto NewData vráceny do setForData statu...
-  const setField = (name, val, index) => {
+  const setField = (name, val) => {
     return setFormData((formData) => {
       const newData = { ...formData };
 
@@ -108,7 +107,7 @@ function DrinkList() {
   const handleSubmit = async (e) => {
     const form = e.currentTarget;
     // defaultní nastavení Form je, že když je provedeno onSubmit, reloadne se celá page, to nechceme, takže proto preventDefault
-    e.preventDefault();
+    //   e.preventDefault();
     // příklad: využití: https://react.dev/learn/responding-to-events
     e.stopPropagation();
 
@@ -130,15 +129,9 @@ function DrinkList() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(dataToServer),
-    }).then(async (response) => {
-      const newDrinkList = [...drinkList];
-      const newRecipe = await response.json();
-      newDrinkList.push(newRecipe);
-      setDrinkList(newDrinkList);
-      console.log(newRecipe);
     });
-
-    handleClose();
+    setCreateRecipeForm(false);
+    // handleClose();
   };
 
   //definuje proměnnou filteredDrinkList, tedy ty recepty, které uživatel vyhledává v searchbaru (pokud nevyhledává nic, definuje je jako všechny recepty)
@@ -174,7 +167,11 @@ function DrinkList() {
               class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3"
               style={{ paddingBottom: "8px" }}
             >
-              <Drink key={drink.id} drink={drink} />
+              <Drink
+                key={drink.id}
+                drink={drink}
+                ingredientsList={ingredientsList}
+              />
             </div>
           );
         })}
@@ -186,7 +183,14 @@ function DrinkList() {
     <div>
       <Navbar bg="light">
         <div className="container-fluid">
-          <Navbar.Brand>List of drinks</Navbar.Brand>
+          <Navbar.Brand
+            style={{
+              fontSize: "2rem",
+              fontWeight: "bold",
+            }}
+          >
+            List of our drinks
+          </Navbar.Brand>
           <div className="d-flex gap-2">
             <Button onClick={() => setCreateRecipeForm(true)}>
               Create recipe
@@ -310,8 +314,8 @@ function DrinkList() {
                     Unit
                   </option>
                   <option value={"g"}>g</option>
-                  <option value={"špetka"}>špetka</option>
-                  <option value={"lžička"}>lžička</option>
+                  <option value={"pinch"}>pinch</option>
+                  <option value={"teaspoon"}>teaspoon</option>
                   <option value={"ml"}>ml</option>
                   <option value={"cube"}>cube</option>
                 </Form.Select>
@@ -363,8 +367,8 @@ function DrinkList() {
                     Unit
                   </option>
                   <option value={"g"}>g</option>
-                  <option value={"špetka"}>špetka</option>
-                  <option value={"lžička"}>lžička</option>
+                  <option value={"pinch"}>pinch</option>
+                  <option value={"teaspoon"}>teaspoon</option>
                   <option value={"ml"}>ml</option>
                   <option value={"cube"}>cube</option>
                 </Form.Select>
@@ -412,8 +416,8 @@ function DrinkList() {
                     Unit
                   </option>
                   <option value={"g"}>g</option>
-                  <option value={"špetka"}>špetka</option>
-                  <option value={"lžička"}>lžička</option>
+                  <option value={"pinch"}>pinch</option>
+                  <option value={"teaspoon"}>teaspoon</option>
                   <option value={"ml"}>ml</option>
                   <option value={"cube"}>cube</option>
                 </Form.Select>
@@ -461,8 +465,8 @@ function DrinkList() {
                     Unit
                   </option>
                   <option value={"g"}>g</option>
-                  <option value={"špetka"}>špetka</option>
-                  <option value={"lžička"}>lžička</option>
+                  <option value={"pinch"}>pinch</option>
+                  <option value={"teaspoon"}>teaspoon</option>
                   <option value={"ml"}>ml</option>
                   <option value={"cube"}>cube</option>
                 </Form.Select>
@@ -510,8 +514,8 @@ function DrinkList() {
                     Unit
                   </option>
                   <option value={"g"}>g</option>
-                  <option value={"špetka"}>špetka</option>
-                  <option value={"lžička"}>lžička</option>
+                  <option value={"pinch"}>pinch</option>
+                  <option value={"teaspoon"}>teaspoon</option>
                   <option value={"ml"}>ml</option>
                   <option value={"cube"}>cube</option>
                 </Form.Select>
@@ -559,8 +563,8 @@ function DrinkList() {
                     Unit
                   </option>
                   <option value={"g"}>g</option>
-                  <option value={"špetka"}>špetka</option>
-                  <option value={"lžička"}>lžička</option>
+                  <option value={"pinch"}>pinch</option>
+                  <option value={"teaspoon"}>teaspoon</option>
                   <option value={"ml"}>ml</option>
                   <option value={"cube"}>cube</option>
                 </Form.Select>

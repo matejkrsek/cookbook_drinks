@@ -23,14 +23,94 @@ import Col from "react-bootstrap/esm/Col";
 function Drink(props) {
   const [deleteRecipeDialog, setDeleteRecipeDialog] = useState(false);
   const [editRecipeForm, setEditRecipeForm] = useState(false);
-  const [createRecipeForm, setCreateRecipeForm] = useState(false);
   const [validated, setValidated] = useState(false);
   const [drinkDetail, setDrinkDetail] = useState(false);
   let navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: props.drink.name,
+    author: props.drink.author,
+    procedure: props.drink.procedure,
+    ingredients: [
+      {
+        name: props.drink.ingredients[0].name,
+        amount: props.drink.ingredients[0].amount,
+        unit: props.drink.ingredients[0].unit,
+      },
+      {
+        name: props.drink.ingredients[1].name,
+        amount: props.drink.ingredients[1].amount,
+        unit: props.drink.ingredients[1].unit,
+      },
+      {
+        name: props.drink.ingredients[2].name,
+        amount: props.drink.ingredients[2].amount,
+        unit: props.drink.ingredients[2].unit,
+      },
+      {
+        name: props.drink.ingredients[3].name,
+        amount: props.drink.ingredients[3].amount,
+        unit: props.drink.ingredients[3].unit,
+      },
+      {
+        name: props.drink.ingredients[4].name,
+        amount: props.drink.ingredients[4].amount,
+        unit: props.drink.ingredients[4].unit,
+      },
+      {
+        name: props.drink.ingredients[5].name,
+        amount: props.drink.ingredients[5].amount,
+        unit: props.drink.ingredients[5].unit,
+      },
+    ],
+  });
 
-  function handleSubmit() {
-    return;
-  }
+  const setField = (name, val) => {
+    return setFormData((formData) => {
+      const newData = { ...formData };
+
+      // If the field is within the ingredients array
+      if (name.startsWith("ingredients")) {
+        const ingredientsIndex = parseInt(name.match(/\[(\d+)\]/)[1], 10);
+
+        // Make a copy of the ingredients array and update the specific element
+        newData.ingredients = [...newData.ingredients];
+        newData.ingredients[ingredientsIndex] = {
+          ...newData.ingredients[ingredientsIndex],
+          [name.split(".").pop()]: val,
+        };
+      } else {
+        newData[name] = val;
+      }
+
+      return newData;
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    const form = e.currentTarget;
+    // defaultní nastavení Form je, že když je provedeno onSubmit, reloadne se celá page, to nechceme, takže proto preventDefault
+    e.preventDefault();
+    // příklad: využití: https://react.dev/learn/responding-to-events
+    e.stopPropagation();
+
+    //data z vyplněného formuláře, která se odesílají na server
+    const dataToServer = {
+      ...formData,
+    };
+    // form je současný vstup uživatele, checkValidity se dívá na podmínky stanovené v jednotlibých Form.Control,
+    // jako např. required, maxLength, min, max atd. a vyhodnocuje, zda je celý vstup validní... pak vrací true
+    if (!form.checkValidity()) {
+      setValidated(true);
+      return;
+    }
+    // ukládáme přidanou známku na server -- ternární operátor nám na základě existence grade nastaví call na /update nebo / create
+
+    ///////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////
+    // TO DO EDIT RECIPE
+    // zopakovat si kurz základy react JS...
+    // OBECNĚ JAK TO UDĚLAT, KDYŽ PŘI ZMĚNE V KOMPONĚNTĚ DRINK chci tu změnu propsat do drinklistu, aby se mi aktualizoval...
+  };
 
   function handleDelete(recipeID) {
     setDeleteRecipeDialog(false);
@@ -248,6 +328,369 @@ function Drink(props) {
           {renderIngredients()}
         </div>
       </Dialog>
+
+      <Modal
+        show={editRecipeForm}
+        onHide={() => setEditRecipeForm(false)}
+        size="lg"
+      >
+        <Form
+          noValidate
+          validated={validated}
+          onSubmit={(e) => handleSubmit(e)}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Edit recipe</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form.Group className="mb-3">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                value={formData.name}
+                onChange={(e) => setField("name", e.target.value)}
+                maxLength={30}
+                required
+              />
+
+              <Form.Label>Author</Form.Label>
+              <Form.Control
+                type="text"
+                value={formData.author}
+                onChange={(e) => setField("author", e.target.value)}
+                maxLength={30}
+                required
+              />
+
+              <Form.Label>Procedure</Form.Label>
+              <Form.Control
+                type="text"
+                value={formData.procedure}
+                onChange={(e) => setField("procedure", e.target.value)}
+                maxLength={100}
+                required
+              />
+            </Form.Group>
+
+            <Row>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Ingredient</Form.Label>
+                <Form.Select
+                  type="text"
+                  value={formData.ingredients[0].name}
+                  onChange={(e) =>
+                    setField("ingredients[0].name", e.target.value)
+                  }
+                  required
+                >
+                  <option value="" disabled>
+                    Select an ingredient
+                  </option>
+                  {props.ingredientsList.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.name}>
+                      {ingredient.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Amount</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={formData.ingredients[0].amount}
+                  onChange={(e) =>
+                    setField("ingredients[0].amount", e.target.value)
+                  }
+                  required
+                />
+              </Form.Group>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Unit</Form.Label>
+                <Form.Select
+                  value={formData.ingredients[0].unit}
+                  onChange={(e) =>
+                    setField("ingredients[0].unit", e.target.value)
+                  }
+                  required
+                >
+                  <option value="" disabled>
+                    Unit
+                  </option>
+                  <option value={"g"}>g</option>
+                  <option value={"špetka"}>špetka</option>
+                  <option value={"lžička"}>lžička</option>
+                  <option value={"ml"}>ml</option>
+                  <option value={"cube"}>cube</option>
+                </Form.Select>
+              </Form.Group>
+            </Row>
+
+            <Row>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Ingredient</Form.Label>
+                <Form.Select
+                  type="text"
+                  value={formData.ingredients[1].name}
+                  onChange={(e) =>
+                    setField("ingredients[1].name", e.target.value)
+                  }
+                  required
+                >
+                  <option value="" disabled>
+                    Select an ingredient
+                  </option>
+                  {props.ingredientsList.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.name}>
+                      {ingredient.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Amount</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={formData.ingredients[1].amount}
+                  onChange={(e) =>
+                    setField("ingredients[1].amount", e.target.value)
+                  }
+                  required
+                />
+              </Form.Group>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Unit</Form.Label>
+                <Form.Select
+                  value={formData.ingredients[1].unit}
+                  onChange={(e) =>
+                    setField("ingredients[1].unit", e.target.value)
+                  }
+                  required
+                >
+                  <option value="" disabled>
+                    Unit
+                  </option>
+                  <option value={"g"}>g</option>
+                  <option value={"špetka"}>špetka</option>
+                  <option value={"lžička"}>lžička</option>
+                  <option value={"ml"}>ml</option>
+                  <option value={"cube"}>cube</option>
+                </Form.Select>
+              </Form.Group>
+            </Row>
+            <Row>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Ingredient</Form.Label>
+                <Form.Select
+                  type="text"
+                  value={formData.ingredients[2].name}
+                  onChange={(e) =>
+                    setField("ingredients[2].name", e.target.value)
+                  }
+                >
+                  <option value="" disabled>
+                    Select an ingredient
+                  </option>
+                  {props.ingredientsList.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.name}>
+                      {ingredient.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Amount</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={formData.ingredients[2].amount}
+                  onChange={(e) =>
+                    setField("ingredients[2].amount", e.target.value)
+                  }
+                />
+              </Form.Group>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Unit</Form.Label>
+                <Form.Select
+                  value={formData.ingredients[2].unit}
+                  onChange={(e) =>
+                    setField("ingredients[2].unit", e.target.value)
+                  }
+                >
+                  <option value="" disabled>
+                    Unit
+                  </option>
+                  <option value={"g"}>g</option>
+                  <option value={"špetka"}>špetka</option>
+                  <option value={"lžička"}>lžička</option>
+                  <option value={"ml"}>ml</option>
+                  <option value={"cube"}>cube</option>
+                </Form.Select>
+              </Form.Group>
+            </Row>
+            <Row>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Ingredient</Form.Label>
+                <Form.Select
+                  type="text"
+                  value={formData.ingredients[3].name}
+                  onChange={(e) =>
+                    setField("ingredients[3].name", e.target.value)
+                  }
+                >
+                  <option value="" disabled>
+                    Select an ingredient
+                  </option>
+                  {props.ingredientsList.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.name}>
+                      {ingredient.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Amount</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={formData.ingredients[3].amount}
+                  onChange={(e) =>
+                    setField("ingredients[3].amount", e.target.value)
+                  }
+                />
+              </Form.Group>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Unit</Form.Label>
+                <Form.Select
+                  value={formData.ingredients[3].unit}
+                  onChange={(e) =>
+                    setField("ingredients[3].unit", e.target.value)
+                  }
+                >
+                  <option value="" disabled>
+                    Unit
+                  </option>
+                  <option value={"g"}>g</option>
+                  <option value={"špetka"}>špetka</option>
+                  <option value={"lžička"}>lžička</option>
+                  <option value={"ml"}>ml</option>
+                  <option value={"cube"}>cube</option>
+                </Form.Select>
+              </Form.Group>
+            </Row>
+            <Row>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Ingredient</Form.Label>
+                <Form.Select
+                  type="text"
+                  value={formData.ingredients[4].name}
+                  onChange={(e) =>
+                    setField("ingredients[4].name", e.target.value)
+                  }
+                >
+                  <option value="" disabled>
+                    Select an ingredient
+                  </option>
+                  {props.ingredientsList.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.name}>
+                      {ingredient.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Amount</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={formData.ingredients[4].amount}
+                  onChange={(e) =>
+                    setField("ingredients[4].amount", e.target.value)
+                  }
+                />
+              </Form.Group>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Unit</Form.Label>
+                <Form.Select
+                  value={formData.ingredients[4].unit}
+                  onChange={(e) =>
+                    setField("ingredients[4].unit", e.target.value)
+                  }
+                >
+                  <option value="" disabled>
+                    Unit
+                  </option>
+                  <option value={"g"}>g</option>
+                  <option value={"špetka"}>špetka</option>
+                  <option value={"lžička"}>lžička</option>
+                  <option value={"ml"}>ml</option>
+                  <option value={"cube"}>cube</option>
+                </Form.Select>
+              </Form.Group>
+            </Row>
+            <Row>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Ingredient</Form.Label>
+                <Form.Select
+                  type="text"
+                  value={formData.ingredients[5].name}
+                  onChange={(e) =>
+                    setField("ingredients[5].name", e.target.value)
+                  }
+                >
+                  <option value="" disabled>
+                    Select an ingredient
+                  </option>
+                  {props.ingredientsList.map((ingredient) => (
+                    <option key={ingredient.id} value={ingredient.name}>
+                      {ingredient.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Amount</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={formData.ingredients[5].amount}
+                  onChange={(e) =>
+                    setField("ingredients[5].amount", e.target.value)
+                  }
+                />
+              </Form.Group>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Unit</Form.Label>
+                <Form.Select
+                  value={formData.ingredients[5].unit}
+                  onChange={(e) =>
+                    setField("ingredients[5].unit", e.target.value)
+                  }
+                >
+                  <option value="" disabled>
+                    Unit
+                  </option>
+                  <option value={"g"}>g</option>
+                  <option value={"špetka"}>špetka</option>
+                  <option value={"lžička"}>lžička</option>
+                  <option value={"ml"}>ml</option>
+                  <option value={"cube"}>cube</option>
+                </Form.Select>
+              </Form.Group>
+            </Row>
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="d-flex flex-row justify-content-between align-items-center w-100">
+              <div className="d-flex flex-row gap-2">
+                <Button
+                  variant="secondary"
+                  onClick={() => setEditRecipeForm(false)}
+                >
+                  Close
+                </Button>
+                <Button variant="primary" type="submit">
+                  Create
+                </Button>
+              </div>
+            </div>
+          </Modal.Footer>
+        </Form>
+      </Modal>
     </div>
   );
 }
