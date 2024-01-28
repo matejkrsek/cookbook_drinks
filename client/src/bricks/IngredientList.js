@@ -34,7 +34,7 @@ function IngredientList() {
       setIngredientsList(serverIngredientsList);
       // console.log(ingredientsList);
       // console.log(response);
-      console.log(serverIngredientsList);
+      //console.log(serverIngredientsList);
     });
   }, []);
 
@@ -88,14 +88,13 @@ function IngredientList() {
   );
 
   function deleteIngredient(ingredientID) {
-    console.log(ingredientID);
     setDeleteIngredientDialog(false);
     return fetch(`http://localhost:3001/api/ingredients/${ingredientID}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-    }).then(async (response) => {
+    }).then(async () => {
       const updatedIngredientsList = ingredientsList.filter(
         (ingredient) => ingredient.id !== ingredientID
       );
@@ -109,13 +108,6 @@ function IngredientList() {
         style={{ marginRight: "10px", backgroundColor: "grey" }}
       >
         Cancel
-      </Button>
-      <Button
-        // onClick={addIngredient}
-        style={{ marginRight: "10px", backgroundColor: "red" }}
-        type="submit"
-      >
-        Add
       </Button>
     </React.Fragment>
   );
@@ -161,9 +153,37 @@ function IngredientList() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(dataToServer),
+    }).then(async (response) => {
+      const responseJson = await response.json();
+      ingredientsList.push(responseJson);
+      console.log(dataToServer);
+      console.log(responseJson);
+      //  console.log(ingredientsList);
     });
-
+    //    const responseFromServer = await response.json()
     // handleClose();
+  };
+
+  const setField = (name, val) => {
+    return setFormData((formData) => {
+      const newData = { ...formData };
+
+      // If the field is within the ingredients array
+      if (name.startsWith("ingredients")) {
+        const ingredientsIndex = parseInt(name.match(/\[(\d+)\]/)[1], 10);
+
+        // Make a copy of the ingredients array and update the specific element
+        newData.ingredients = [...newData.ingredients];
+        newData.ingredients[ingredientsIndex] = {
+          ...newData.ingredients[ingredientsIndex],
+          [name.split(".").pop()]: val,
+        };
+      } else {
+        newData[name] = val;
+      }
+
+      return newData;
+    });
   };
 
   return (
@@ -171,7 +191,6 @@ function IngredientList() {
       <br />
       <div className="card">
         <DataTable
-          //  ref={dt}
           value={ingredientsList}
           dataKey="id"
           paginator
@@ -179,7 +198,6 @@ function IngredientList() {
           rowsPerPageOptions={[5, 10, 25]}
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           currentPageReportTemplate="Show from {first} to {last} from total of {totalRecords} ingredients"
-          // globalFilter={globalFilter}
           header={header}
           filters={filters}
           filterDisplay="row"
@@ -220,8 +238,8 @@ function IngredientList() {
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                // value={formData.name}
-                // onChange={(e) => setField("name", e.target.value)}
+                value={formData.name}
+                onChange={(e) => setField("name", e.target.value)}
                 maxLength={25}
                 required
               />
@@ -230,7 +248,15 @@ function IngredientList() {
               </Form.Control.Feedback>
             </Form.Group>
           </Modal.Body>
-          <Modal.Footer>{newIngredientDialogFooter}</Modal.Footer>
+          <Modal.Footer>
+            {newIngredientDialogFooter}
+            <Button
+              style={{ marginRight: "10px", backgroundColor: "red" }}
+              type="submit"
+            >
+              Add
+            </Button>
+          </Modal.Footer>
         </Form>
       </Modal>
 

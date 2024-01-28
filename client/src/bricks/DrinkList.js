@@ -185,7 +185,7 @@ function DrinkList() {
         <div className="container-fluid">
           <Navbar.Brand
             style={{
-              fontSize: "2rem",
+              fontSize: "1.5rem",
               fontWeight: "bold",
             }}
           >
