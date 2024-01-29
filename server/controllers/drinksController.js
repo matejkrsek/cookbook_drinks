@@ -138,43 +138,65 @@ let drinks = [
   },
 ]; // in-memory databáze
 
+const validateIngredient = (ingredient) => {
+    const { name, amount, unit, id } = ingredient;
+    if (!name || typeof name !== 'string') return 'Invalid ingredient name';
+    if (!amount || typeof amount !== 'string') return 'Invalid ingredient amount';
+    if (!unit || typeof unit !== 'string') return 'Invalid ingredient unit';
+    if (!id || typeof id !== 'string') return 'Invalid ingredient id';
+    return null;
+}; // validace ingredience přidané do receptu včetně vlastností
+
+const validateDrink = (drink) => {
+    const { name, author, procedure, ingredients } = drink;
+    if (!name || typeof name !== 'string') return 'Invalid name';
+    if (!author || typeof author !== 'string') return 'Invalid author';
+    if (!procedure || typeof procedure !== 'string') return 'Invalid procedure';
+    if (!Array.isArray(ingredients)) return 'Invalid ingredients - not an array';
+    if (ingredients.length < 2) return 'Invalid ingredients - at least two required';
+    if (ingredients.some(ing => validateIngredient(ing) !== null)) return 'Invalid ingredients - structure error';
+    return null;
+}; // validace atributů receptu včetně validace atributu ingredience
+
 const drinksController = {
-  getAllDrinks: (req, res) => {
-    res.json(drinks);
-  },
-  getDrinkById: (req, res) => {
-    const drink = drinks.find((d) => d.id === req.params.id);
-    if (!drink) return res.status(404).send("Drink not found");
-    res.json(drink);
-  },
-  createDrink: (req, res) => {
-    const { author, name, procedure, ingredients } = req.body;
-    if (!author || !name || !procedure || !ingredients) {
-      return res.status(400).send("Missing required fields");
-    }
-    const newDrink = { id: uuidv4(), author, name, procedure, ingredients };
-    drinks.push(newDrink);
-    res.status(201).json(newDrink);
-  },
-  updateDrink: (req, res) => {
-    const drink = drinks.find((d) => d.id === req.params.id);
-    if (!drink) return res.status(404).send("Drink not found");
+    getAllDrinks: (req, res) => {
+        res.json(drinks);
+    },
 
-    const { author, name, procedure } = req.body;
-    if (author) drink.author = author;
-    if (name) drink.name = name;
-    if (procedure) drink.procedure = procedure;
-    if (ingredients) drink.ingredients = ingredients;
-
-    res.json(drink);
-  },
-  deleteDrink: (req, res) => {
-    const index = drinks.findIndex((d) => d.id === req.params.id);
-    if (index === -1) return res.status(404).send("Drink not found");
-
-    drinks.splice(index, 1);
-    res.status(204).send();
-  },
+    getDrinkById: (req, res) => {
+        const drink = drinks.find(d => d.id === req.params.id);
+        if (!drink) return res.status(404).send('Drink not found');
+        res.json(drink);
+    },
+    
+    createDrink: (req, res) => {
+        const newDrink = { ...req.body, id: uuidv4() }; // Přidat ID
+        const validationError = validateDrink(newDrink);
+        if (validationError) return res.status(400).send(validationError);
+    
+        drinks.push(newDrink);
+        res.status(201).json(newDrink);
+    },
+    
+    updateDrink: (req, res) => {
+        const drinkIndex = drinks.findIndex(d => d.id === req.params.id);
+        if (drinkIndex === -1) return res.status(404).send('Drink not found');
+    
+        const updatedDrink = { ...drinks[drinkIndex], ...req.body };
+        const validationError = validateDrink(updatedDrink);
+        if (validationError) return res.status(400).send(validationError);
+    
+        drinks[drinkIndex] = updatedDrink;
+        res.json(updatedDrink);
+    },
+    
+    deleteDrink: (req, res) => {
+        const drinkIndex = drinks.findIndex(d => d.id === req.params.id);
+        if (drinkIndex === -1) return res.status(404).send('Drink not found');
+    
+        drinks.splice(drinkIndex, 1);
+        res.status(204).send();
+    },
 };
 
 module.exports = drinksController;
