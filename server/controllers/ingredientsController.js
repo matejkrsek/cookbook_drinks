@@ -40,31 +40,37 @@ let ingredients = [
   { name: "wine white", id: "36" },
 ]; // In-memory databáze pro ingredience
 
-const ingredientsController = {
-  getAllIngredients: (req, res) => {
-    res.json(ingredients);
-  },
-  getIngredientById: (req, res) => {
-    const ingredient = ingredients.find((i) => i.id === req.params.id);
-    if (!ingredient) return res.status(404).send("Ingredient not found");
-    res.json(ingredient);
-  },
-  createIngredient: (req, res) => {
-    const { name } = req.body;
-    if (!name) {
-      return res.status(400).send("Missing required field");
-    }
-    const newIngredient = { id: uuidv4(), name };
-    ingredients.push(newIngredient);
-    res.status(201).json(newIngredient);
-  },
-  deleteIngredient: (req, res) => {
-    const index = ingredients.findIndex((i) => i.id === req.params.id);
-    if (index === -1) return res.status(404).send("Ingredient not found");
+const validateSoloIngredient = (ingredient) => {
+    const { name } = ingredient;
+    if (!name || typeof name !== 'string') return 'Invalid name';
+    return null;
+}; // Při tvorbě samotné ingredience mimo recept má ingredience jen jeden požadovaný atribut - jméno + se přidá id
 
-    ingredients.splice(index, 1);
-    res.status(204).send();
-  },
+const ingredientsController = {
+    getAllIngredients: (req, res) => {
+        res.json(ingredients);
+    },
+    getIngredientById: (req, res) => {
+        const ingredient = ingredients.find(i => i.id === req.params.id);
+        if (!ingredient) return res.status(404).send('Ingredient not found');
+        res.json(ingredient);
+    },
+    createIngredient: (req, res) => {
+        const validationError = validateSoloIngredient(req.body);
+        if (validationError) return res.status(400).send(validationError);
+
+        const newIngredient = { id: uuidv4(), ...req.body }; // Přidat ID
+        ingredients.push(newIngredient);
+        res.status(201).json(newIngredient);
+    },
+    deleteIngredient: (req, res) => {
+        const index = ingredients.findIndex(i => i.id === req.params.id);
+        if (index === -1) return res.status(404).send('Ingredient not found');
+
+        ingredients.splice(index, 1);
+        res.status(204).send();
+    }
 };
 
 module.exports = ingredientsController;
+
