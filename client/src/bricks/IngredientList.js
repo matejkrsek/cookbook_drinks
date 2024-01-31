@@ -130,9 +130,8 @@ function IngredientList() {
   const handleSubmit = async (e) => {
     const form = e.currentTarget;
     // defaultní nastavení Form je, že když je provedeno onSubmit, reloadne se celá page, to nechceme, takže proto preventDefault
-    // e.preventDefault();
+
     // příklad: využití: https://react.dev/learn/responding-to-events
-    e.stopPropagation();
 
     //data z vyplněného formuláře, která se odesílají na server
     const dataToServer = {
@@ -140,11 +139,13 @@ function IngredientList() {
     };
     // form je současný vstup uživatele, checkValidity se dívá na podmínky stanovené v jednotlibých Form.Control,
     // jako např. required, maxLength, min, max atd. a vyhodnocuje, zda je celý vstup validní... pak vrací true
-    if (!form.checkValidity()) {
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
       setValidated(true);
-      setAddIngredientForm(false);
       return;
     }
+
     // ukládáme přidanou známku na server -- ternární operátor nám na základě existence grade nastaví call na /update nebo / create
 
     await fetch(`http://localhost:3001/api/ingredients/`, {
@@ -156,12 +157,8 @@ function IngredientList() {
     }).then(async (response) => {
       const responseJson = await response.json();
       ingredientsList.push(responseJson);
-      console.log(dataToServer);
-      console.log(responseJson);
-      //  console.log(ingredientsList);
+      //  setValidated(true);
     });
-    //    const responseFromServer = await response.json()
-    // handleClose();
   };
 
   const setField = (name, val) => {
@@ -239,7 +236,9 @@ function IngredientList() {
               <Form.Control
                 type="text"
                 value={formData.name}
-                onChange={(e) => setField("name", e.target.value)}
+                onChange={(e) =>
+                  setField("name", e.target.value.toLocaleLowerCase().trim())
+                }
                 maxLength={25}
                 required
               />

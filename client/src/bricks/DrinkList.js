@@ -109,7 +109,13 @@ function DrinkList() {
     // defaultní nastavení Form je, že když je provedeno onSubmit, reloadne se celá page, to nechceme, takže proto preventDefault
     //   e.preventDefault();
     // příklad: využití: https://react.dev/learn/responding-to-events
-    e.stopPropagation();
+
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      setValidated(true);
+      return;
+    }
 
     //data z vyplněného formuláře, která se odesílají na server
     const dataToServer = {
@@ -117,10 +123,7 @@ function DrinkList() {
     };
     // form je současný vstup uživatele, checkValidity se dívá na podmínky stanovené v jednotlibých Form.Control,
     // jako např. required, maxLength, min, max atd. a vyhodnocuje, zda je celý vstup validní... pak vrací true
-    if (!form.checkValidity()) {
-      setValidated(true);
-      return;
-    }
+
     // ukládáme přidanou známku na server -- ternární operátor nám na základě existence grade nastaví call na /update nebo / create
 
     const res = await fetch(`http://localhost:3001/api/drinks/`, {

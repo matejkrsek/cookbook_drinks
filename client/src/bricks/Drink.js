@@ -25,6 +25,7 @@ function Drink(props) {
   const [editRecipeForm, setEditRecipeForm] = useState(false);
   const [validated, setValidated] = useState(false);
   const [drinkDetail, setDrinkDetail] = useState(false);
+  const [counter, setCounter] = useState(1);
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: props.drink.name,
@@ -171,7 +172,7 @@ function Drink(props) {
     </React.Fragment>
   );
 
-  const renderIngredients = () => {
+  const renderIngredients = (number) => {
     const ingredientsJSX = [];
 
     for (let i = 0; i < 6; i++) {
@@ -180,7 +181,7 @@ function Drink(props) {
           <div key={i}>
             {props.drink.ingredients[i].name}
             {"      "}
-            {props.drink.ingredients[i].amount}{" "}
+            {number * props.drink.ingredients[i].amount}{" "}
             {props.drink.ingredients[i].unit}
           </div>
         );
@@ -188,6 +189,16 @@ function Drink(props) {
     }
 
     return ingredientsJSX;
+  };
+
+  const incrementCounter = () => {
+    setCounter(counter + 1);
+  };
+
+  const decrementCounter = () => {
+    if (counter > 0) {
+      setCounter(counter - 1);
+    }
   };
 
   return (
@@ -324,8 +335,16 @@ function Drink(props) {
           <br></br>
           <div>Procedure: {props.drink.procedure}</div>
           <br></br>
-          <div>Ingredients:</div>
-          {renderIngredients()}
+          <div>
+            Ingredients for {counter}{" "}
+            <span>
+              <button onClick={incrementCounter}>+</button>
+              <button onClick={decrementCounter}>-</button>
+            </span>
+            drinks:
+          </div>
+          <div></div>
+          {renderIngredients(counter)}
         </div>
       </Dialog>
 
