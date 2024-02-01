@@ -100,15 +100,8 @@ function DrinkList() {
     });
   };
 
-  function handleClose() {
-    setCreateRecipeForm(false);
-  }
-
   const handleSubmit = async (e) => {
     const form = e.currentTarget;
-    // defaultní nastavení Form je, že když je provedeno onSubmit, reloadne se celá page, to nechceme, takže proto preventDefault
-    //   e.preventDefault();
-    // příklad: využití: https://react.dev/learn/responding-to-events
 
     if (form.checkValidity() === false) {
       e.preventDefault();
@@ -121,20 +114,18 @@ function DrinkList() {
     const dataToServer = {
       ...formData,
     };
-    // form je současný vstup uživatele, checkValidity se dívá na podmínky stanovené v jednotlibých Form.Control,
-    // jako např. required, maxLength, min, max atd. a vyhodnocuje, zda je celý vstup validní... pak vrací true
 
-    // ukládáme přidanou známku na server -- ternární operátor nám na základě existence grade nastaví call na /update nebo / create
-
-    const res = await fetch(`http://localhost:3001/api/drinks/`, {
+    await fetch(`http://localhost:3001/api/drinks/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(dataToServer),
+    }).then(async (response) => {
+      console.log(response.status);
     });
+
     setCreateRecipeForm(false);
-    // handleClose();
   };
 
   //definuje proměnnou filteredDrinkList, tedy ty recepty, které uživatel vyhledává v searchbaru (pokud nevyhledává nic, definuje je jako všechny recepty)
