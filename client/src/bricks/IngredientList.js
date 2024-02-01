@@ -1,6 +1,5 @@
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Toolbar } from "primereact/toolbar";
 import React, { useEffect, useState } from "react";
 import { Button } from "primereact/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

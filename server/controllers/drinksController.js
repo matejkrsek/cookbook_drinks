@@ -162,7 +162,7 @@ const validateDrink = (drink) => {
 
 const drinksController = {
   getAllDrinks: (req, res) => {
-    res.json(drinks);
+    res.status(200).json(drinks);
   },
 
   getDrinkById: (req, res) => {
