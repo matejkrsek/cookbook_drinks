@@ -139,11 +139,10 @@ let drinks = [
 ]; // in-memory databáze
 
 const validateIngredient = (ingredient) => {
-  const { name, amount, unit, id } = ingredient;
+  const { name, amount, unit} = ingredient;
   if (!name || typeof name !== "string") return "Invalid ingredient name";
   if (!amount || typeof amount !== "string") return "Invalid ingredient amount";
   if (!unit || typeof unit !== "string") return "Invalid ingredient unit";
-  if (id && typeof id !== 'string') return "Invalid ingredient id";
   return null;
 }; // validace ingredience přidané do receptu včetně vlastností
 
