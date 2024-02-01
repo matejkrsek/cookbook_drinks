@@ -48,7 +48,7 @@ function IngredientList() {
       <React.Fragment>
         <Button
           icon={<FontAwesomeIcon icon={faTrashCan} />}
-          rounded
+          style={{ borderRadius: "5px" }}
           outlined
           severity="danger"
           onClick={() => confirmDeleteIngredient(rowData)}
@@ -72,8 +72,9 @@ function IngredientList() {
         <span className="p-input-icon-left">
           <i className="pi pi-search" />
           <Button
+            severity="success"
             onClick={() => setAddIngredientForm(true)}
-            style={{ marginRight: "10px" }}
+            style={{ marginRight: "10px", height: "40px", borderRadius: "5px" }}
           >
             Add new ingredient
           </Button>
@@ -105,7 +106,8 @@ function IngredientList() {
     <React.Fragment>
       <Button
         onClick={() => setAddIngredientForm(false)}
-        style={{ marginRight: "10px", backgroundColor: "grey" }}
+        severity="secondary"
+        style={{ borderRadius: "5px" }}
       >
         Cancel
       </Button>
@@ -116,13 +118,15 @@ function IngredientList() {
     <React.Fragment>
       <Button
         label="No"
-        outlined
         onClick={() => setDeleteIngredientDialog(false)}
+        severity="secondary"
+        style={{ marginRight: "7px", borderRadius: "5px" }}
       />
       <Button
         label="Yes"
         severity="danger"
         onClick={() => deleteIngredient(ingredient.id)}
+        style={{ borderRadius: "5px" }}
       />
     </React.Fragment>
   );
@@ -157,7 +161,6 @@ function IngredientList() {
     }).then(async (response) => {
       const responseJson = await response.json();
       ingredientsList.push(responseJson);
-      //  setValidated(true);
     });
   };
 
@@ -250,7 +253,8 @@ function IngredientList() {
           <Modal.Footer>
             {newIngredientDialogFooter}
             <Button
-              style={{ marginRight: "10px", backgroundColor: "red" }}
+              severity="success"
+              style={{ marginRight: "10px", borderRadius: "5px" }}
               type="submit"
             >
               Add

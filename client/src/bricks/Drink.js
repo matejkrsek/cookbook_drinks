@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Card from "react-bootstrap/Card"; // import komponenty Card
+import "primeicons/primeicons.css";
 import Icon from "@mdi/react"; // komponenta, kterou budeme používat pro zobrazení ikony
 import {
   mdiAccountSchoolOutline,
@@ -8,7 +9,7 @@ import {
   mdiPencilOutline,
 } from "@mdi/js"; // ikony, které chceme využít
 import CardFooter from "react-bootstrap/esm/CardFooter";
-import Button from "react-bootstrap/esm/Button";
+import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import "../App.css";
@@ -146,29 +147,15 @@ function Drink(props) {
     <React.Fragment>
       <Button
         onClick={() => setDeleteRecipeDialog(false)}
-        style={{ marginRight: "10px", backgroundColor: "grey" }}
+        style={{ marginRight: "10px", borderRadius: "5px" }}
+        severity="secondary"
       >
         No
       </Button>
       <Button
+        severity="danger"
         onClick={() => handleDelete(props.drink.id)}
-        style={{ marginRight: "10px", backgroundColor: "red" }}
-      >
-        Yes
-      </Button>
-    </React.Fragment>
-  );
-  const editRecipeFormFooter = (
-    <React.Fragment>
-      <Button
-        onClick={() => setEditRecipeForm(false)}
-        style={{ marginRight: "10px", backgroundColor: "grey" }}
-      >
-        No
-      </Button>
-      <Button
-        onClick={editRecipe}
-        style={{ marginRight: "10px", backgroundColor: "red" }}
+        style={{ marginRight: "10px", borderRadius: "5px" }}
       >
         Yes
       </Button>
@@ -211,34 +198,34 @@ function Drink(props) {
           // Include padding and border in the width
           padding: "8px", // Add padding for better spacing
           boxSizing: "border-box",
-          margin: "20px",
-          // overflow: "hidden",
-          width: "300px",
-          height: "350px",
+          margin: "10px",
+          width: "330px",
+          height: "300px",
           borderColor: "black",
           borderWidth: 3,
           borderRadius: 10,
         }}
+        className="bg-light"
       >
-        <CardHeader style={{ display: "flex", gap: "5px" }}>
+        <CardHeader
+          style={{
+            display: "flex",
+            justifyContent: "space-between", // Align items to the end
+            alignItems: "center", // Align items vertically
+            backgroundColor: "lightyellow",
+          }}
+        >
           <div
             style={{
               fontWeight: "bold",
               fontSize: "large",
-              //marginRight: "20px",
             }}
           >
-            <Icon path={mdiGlassCocktail} size={1} color="grey" />{" "}
+            <Icon path={mdiGlassCocktail} size={1} color="orange" />{" "}
             {props.drink.name}
           </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "start",
-              justifyContent: "flex-end",
-              gap: "5px",
-            }}
-          >
+
+          <div style={{ display: "flex", gap: "5px" }}>
             <Button
               onClick={openEditRecipeForm}
               style={{
@@ -250,7 +237,6 @@ function Drink(props) {
                 height: "30px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
               }}
             >
               {" "}
@@ -268,14 +254,19 @@ function Drink(props) {
                 height: "30px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
               }}
             >
               <Icon path={mdiDelete} size={0.8} color="red" />
             </Button>
           </div>
         </CardHeader>
-        <Card.Body>
+
+        <Card.Body
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
           <div
             style={{
               fontStyle: "italic",
@@ -287,8 +278,19 @@ function Drink(props) {
           </div>
           <div>{props.drink.procedure}</div>
         </Card.Body>
-        <CardFooter>
-          <Button onClick={() => setDrinkDetail(true)}>Read more</Button>
+        <CardFooter
+          style={{
+            backgroundColor: "lightyellow",
+          }}
+        >
+          <Button
+            onClick={() => setDrinkDetail(true)}
+            style={{
+              borderRadius: "5px",
+            }}
+          >
+            Read more
+          </Button>
         </CardFooter>
       </Card>
 
@@ -344,7 +346,7 @@ function Drink(props) {
                 type="text"
                 value={formData.author}
                 onChange={(e) => setField("author", e.target.value)}
-                maxLength={30}
+                maxLength={50}
                 required
               />
               <Form.Control.Feedback type="invalid">
@@ -352,10 +354,11 @@ function Drink(props) {
               </Form.Control.Feedback>
               <Form.Label>Procedure</Form.Label>
               <Form.Control
+                as="textarea"
                 type="text"
                 value={formData.procedure}
                 onChange={(e) => setField("procedure", e.target.value)}
-                maxLength={100}
+                maxLength={300}
                 required
               />
               <Form.Control.Feedback type="invalid">
@@ -669,12 +672,17 @@ function Drink(props) {
             <div className="d-flex flex-row justify-content-between align-items-center w-100">
               <div className="d-flex flex-row gap-2">
                 <Button
-                  variant="secondary"
+                  severity="secondary"
                   onClick={() => setEditRecipeForm(false)}
+                  style={{ borderRadius: "5px" }}
                 >
                   Close
                 </Button>
-                <Button variant="primary" type="submit">
+                <Button
+                  severity="success"
+                  type="submit"
+                  style={{ borderRadius: "5px" }}
+                >
                   Edit
                 </Button>
               </div>
@@ -692,20 +700,38 @@ function Drink(props) {
         onHide={() => setDrinkDetail(false)}
       >
         <div className="confirmation-content">
-          <i
-            className="pi pi-exclamation-triangle mr-3"
-            style={{ fontSize: "2rem" }}
-          />
           <div></div>
-          <div>Author: {props.drink.author}</div>
+          <span style={{ fontWeight: "bold" }}>Author: </span>{" "}
+          <span>{props.drink.author}</span>
           <br></br>
-          <div>Procedure: {props.drink.procedure}</div>
           <br></br>
-          <div>
+          <span style={{ fontWeight: "bold" }}>Procedure: </span>{" "}
+          <span>{props.drink.procedure}</span>
+          <br></br>
+          <br></br>
+          <div style={{ fontWeight: "bold" }}>
             Ingredients for {counter}{" "}
             <span>
-              <button onClick={incrementCounter}>+</button>
-              <button onClick={decrementCounter}>-</button>
+              <Button
+                icon="pi pi-plus"
+                style={{
+                  height: "25px",
+                  width: "30px",
+                  marginRight: "5px",
+                  alignItems: "center",
+                }}
+                onClick={incrementCounter}
+              ></Button>
+              <Button
+                icon="pi pi-minus"
+                style={{
+                  height: "25px",
+                  width: "30px",
+                  alignItems: "center",
+                  marginRight: "5px",
+                }}
+                onClick={decrementCounter}
+              ></Button>
             </span>
             drinks:
           </div>

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Drink from "./Drink";
 import Navbar from "react-bootstrap/Navbar";
-import Button from "react-bootstrap/Button";
+import { Button } from "primereact/button";
 import Form from "react-bootstrap/Form";
 import Icon from "@mdi/react";
 import { useState, useMemo } from "react";
@@ -175,21 +175,30 @@ function DrinkList() {
 
   return (
     <div>
-      <Navbar bg="light">
+      <Navbar
+        style={{
+          backgroundColor: "lightyellow",
+        }}
+      >
         <div className="container-fluid">
           <Navbar.Brand
             style={{
               fontSize: "1.5rem",
               fontWeight: "bold",
+              //  backgroundColor: "lightyellow",
             }}
           >
             List of our drinks
           </Navbar.Brand>
           <div className="d-flex gap-2">
-            <Button onClick={() => setCreateRecipeForm(true)}>
+            <Button
+              severity="success"
+              onClick={() => setCreateRecipeForm(true)}
+              style={{ borderRadius: "5px" }}
+            >
               Create recipe
             </Button>
-            <Form className="d-flex" onSubmit={handleSearch}>
+            <Form className="d-flex gap-2" onSubmit={handleSearch}>
               <Form.Control
                 id={"searchInput"}
                 style={{ maxWidth: "150px" }}
@@ -199,8 +208,8 @@ function DrinkList() {
                 onChange={handleSearchDelete}
               />
               <Button
-                style={{ marginRight: "8px" }}
-                variant="outline-success"
+                style={{ marginRight: "8px", borderRadius: "5px" }}
+                severity="success"
                 type="submit"
               >
                 <Icon size={1} path={mdiMagnify} />
@@ -252,6 +261,7 @@ function DrinkList() {
               </Form.Control.Feedback>
               <Form.Label>Procedure</Form.Label>
               <Form.Control
+                as="textarea"
                 type="text"
                 value={formData.procedure}
                 onChange={(e) => setField("procedure", e.target.value)}
