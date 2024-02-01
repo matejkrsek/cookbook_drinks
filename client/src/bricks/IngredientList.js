@@ -62,19 +62,34 @@ function IngredientList() {
       style={{
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: "center", // Add this line to vertically center the content
+        backgroundColor: "lightyellow",
+        flexDirection: "column", // Add this line to stack the children vertically
+        textAlign: "center", // Add this line to center the text horizontally
+        paddingTop: "10px",
       }}
     >
       <h4 className="m-0 mb-3">
         Here you can see and add ingredients of our drinks!
       </h4>
-      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "10px",
+          alignItems: "center",
+          marginBottom: "10px",
+        }}
+      >
         <span className="p-input-icon-left">
           <i className="pi pi-search" />
           <Button
             severity="success"
             onClick={() => setAddIngredientForm(true)}
-            style={{ marginRight: "10px", height: "40px", borderRadius: "5px" }}
+            style={{
+              marginRight: "10px",
+              height: "40px",
+              borderRadius: "5px",
+            }}
           >
             Add new ingredient
           </Button>
