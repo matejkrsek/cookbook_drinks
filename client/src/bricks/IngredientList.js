@@ -1,6 +1,6 @@
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Button } from "primereact/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
@@ -9,11 +9,13 @@ import { Modal } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { FilterMatchMode } from "primereact/api";
 import { InputText } from "primereact/inputtext";
+import { Toast } from "primereact/toast";
 
 function IngredientList() {
   let emptyIngredient = { name: "", id: "" };
 
   const [addIngredientForm, setAddIngredientForm] = useState(false);
+  const toast = useRef(null);
   const [ingredientsList, setIngredientsList] = useState([]);
   const [validated, setValidated] = useState(false);
   const [formData, setFormData] = useState({ name: "" });
@@ -42,6 +44,10 @@ function IngredientList() {
     setDeleteIngredientDialog(true);
   };
 
+  const handleClose = (event) => {
+    event.preventDefault();
+    setAddIngredientForm(false);
+  };
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -86,7 +92,7 @@ function IngredientList() {
             onClick={() => setAddIngredientForm(true)}
             style={{
               marginRight: "10px",
-              height: "40px",
+              height: "42px",
               borderRadius: "5px",
             }}
           >
@@ -102,16 +108,46 @@ function IngredientList() {
     </div>
   );
 
-  function deleteIngredient(ingredientID) {
+  function deleteIngredient(ingredient) {
     setDeleteIngredientDialog(false);
-    return fetch(`http://localhost:3001/api/ingredients/${ingredientID}`, {
+    return fetch(`http://localhost:3001/api/ingredients/${ingredient.id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-    }).then(async () => {
+    }).then(async (response) => {
+      switch (response.status) {
+        case 204: {
+          toast.current.show({
+            severity: "success",
+            summary: "OK",
+            detail: `Ingredient ${ingredient.name} was succesfuly deleted`,
+            life: 4000,
+          });
+
+          break;
+        }
+        case 404: {
+          toast.current.show({
+            severity: "danger",
+            summary: "Fail",
+            detail: `Ingredient not found`,
+            life: 3000,
+          });
+          break;
+        }
+        default: {
+          toast.current.show({
+            severity: "danger",
+            summary: "Error",
+            detail: `Error`,
+            life: 3000,
+          });
+        }
+      }
+
       const updatedIngredientsList = ingredientsList.filter(
-        (ingredient) => ingredient.id !== ingredientID
+        (ingredientX) => ingredientX.id !== ingredient.id
       );
       setIngredientsList(updatedIngredientsList);
     });
@@ -119,11 +155,11 @@ function IngredientList() {
   const newIngredientDialogFooter = (
     <React.Fragment>
       <Button
-        onClick={() => setAddIngredientForm(false)}
+        onClick={handleClose}
         severity="secondary"
         style={{ borderRadius: "5px" }}
       >
-        Cancel
+        Close
       </Button>
     </React.Fragment>
   );
@@ -139,7 +175,7 @@ function IngredientList() {
       <Button
         label="Yes"
         severity="danger"
-        onClick={() => deleteIngredient(ingredient.id)}
+        onClick={() => deleteIngredient(ingredient)}
         style={{ borderRadius: "5px" }}
       />
     </React.Fragment>
@@ -147,6 +183,7 @@ function IngredientList() {
 
   const handleSubmit = async (e) => {
     const form = e.currentTarget;
+    e.preventDefault();
     // defaultní nastavení Form je, že když je provedeno onSubmit, reloadne se celá page, to nechceme, takže proto preventDefault
 
     // příklad: využití: https://react.dev/learn/responding-to-events
@@ -173,8 +210,41 @@ function IngredientList() {
       },
       body: JSON.stringify(dataToServer),
     }).then(async (response) => {
-      const responseJson = await response.json();
-      ingredientsList.push(responseJson);
+      setAddIngredientForm(false);
+      switch (response.status) {
+        case 201: {
+          toast.current.show({
+            severity: "success",
+            summary: "OK",
+            detail: `Ingredient ${dataToServer.name} succesfuly added`,
+            life: 3000,
+          });
+          const responseJson = await response.json();
+          console.log(responseJson);
+          ingredientsList.push(responseJson);
+
+          break;
+        }
+        case 400: {
+          toast.current.show({
+            severity: "info",
+            summary: "Fail",
+            detail: `Ingredient ${dataToServer.name} already exists in our database`,
+            life: 3000,
+          });
+          break;
+        }
+        default: {
+          toast.current.show({
+            severity: "danger",
+            summary: "Error",
+            detail: `Error`,
+            life: 3000,
+          });
+        }
+      }
+
+      setFormData(emptyIngredient);
     });
   };
 
@@ -202,96 +272,104 @@ function IngredientList() {
 
   return (
     <div>
-      <DataTable
-        value={ingredientsList}
-        size="small"
-        dataKey="id"
-        paginator
-        rows={10}
-        rowsPerPageOptions={[5, 10, 25]}
-        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        currentPageReportTemplate="Show from {first} to {last} from total of {totalRecords} ingredients"
-        header={header}
-        filters={filters}
-        filterDisplay="row"
-        stripedRows
-        globalFilter={globalFilter}
-      >
-        <Column></Column>
-        <Column></Column>
-        <Column></Column>
-        <Column
-          field="name"
-          header="Name"
-          sortable
-          style={{ width: "25%" }}
-        ></Column>
-        <Column body={actionBodyTemplate} exportable={false}></Column>
-      </DataTable>
-
-      <Modal
-        show={addIngredientForm}
-        onHide={() => setAddIngredientForm(false)}
-        size="md"
-      >
-        <Form
-          noValidate
-          validated={validated}
-          onSubmit={(e) => handleSubmit(e)}
+      <Toast ref={toast} />
+      <div>
+        <DataTable
+          value={ingredientsList}
+          size="small"
+          dataKey="id"
+          paginator
+          rows={10}
+          rowsPerPageOptions={[5, 10, 25]}
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          currentPageReportTemplate="Show from {first} to {last} from total of {totalRecords} ingredients"
+          header={header}
+          filters={filters}
+          filterDisplay="row"
+          stripedRows
+          globalFilter={globalFilter}
         >
-          <Modal.Header closeButton>
-            <Modal.Title>Add new ingredient</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form.Group className="mb-3">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                value={formData.name}
-                onChange={(e) =>
-                  setField("name", e.target.value.toLocaleLowerCase().trim())
-                }
-                maxLength={25}
-                required
-              />
-              <Form.Control.Feedback type="invalid">
-                Write from 1 to 25 characters
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
-            {newIngredientDialogFooter}
-            <Button
-              severity="success"
-              style={{ marginRight: "10px", borderRadius: "5px" }}
-              type="submit"
-            >
-              Add
-            </Button>
-          </Modal.Footer>
-        </Form>
-      </Modal>
+          <Column></Column>
+          <Column></Column>
+          <Column
+            field="id"
+            header="id"
+            sortable
+            style={{ width: "25%" }}
+          ></Column>
+          <Column
+            field="name"
+            header="Name"
+            sortable
+            style={{ width: "25%" }}
+          ></Column>
+          <Column body={actionBodyTemplate} exportable={false}></Column>
+        </DataTable>
 
-      <Dialog
-        visible={deleteIngredientDialog}
-        style={{ width: "32rem" }}
-        breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-        header="Confirmation"
-        modal
-        footer={deleteIngredientDialogFooter}
-        onHide={() => setDeleteIngredientDialog(false)}
-      >
-        <div className="confirmation-content">
-          <i
-            className="pi pi-exclamation-triangle mr-3"
-            style={{ fontSize: "2rem" }}
-          />
+        <Modal
+          show={addIngredientForm}
+          onHide={() => setAddIngredientForm(false)}
+          size="md"
+        >
+          <Form
+            noValidate
+            validated={validated}
+            onSubmit={(e) => handleSubmit(e)}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Add new ingredient</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form.Group className="mb-3">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) =>
+                    setField("name", e.target.value.toLocaleLowerCase().trim())
+                  }
+                  maxLength={25}
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Write from 1 to 25 characters
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              {newIngredientDialogFooter}
+              <Button
+                severity="success"
+                style={{ marginRight: "10px", borderRadius: "5px" }}
+                type="submit"
+              >
+                Add
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal>
 
-          <span>
-            Do you really want to delete <b>{ingredient.name}</b>?
-          </span>
-        </div>
-      </Dialog>
+        <Dialog
+          visible={deleteIngredientDialog}
+          style={{ width: "32rem" }}
+          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+          header="Confirmation"
+          modal
+          footer={deleteIngredientDialogFooter}
+          onHide={() => setDeleteIngredientDialog(false)}
+        >
+          <div className="confirmation-content">
+            <i
+              className="pi pi-exclamation-triangle mr-3"
+              style={{ fontSize: "2rem" }}
+            />
+
+            <span>
+              Do you really want to delete <b>{ingredient.name}</b>?
+            </span>
+          </div>
+        </Dialog>
+      </div>
     </div>
   );
 }

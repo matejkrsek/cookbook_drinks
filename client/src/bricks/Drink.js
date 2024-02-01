@@ -117,6 +117,11 @@ function Drink(props) {
     setEditRecipeForm(false);
   };
 
+  const handleClose = (event) => {
+    event.preventDefault();
+    setEditRecipeForm(false);
+  };
+
   function handleDelete(recipeID) {
     setDeleteRecipeDialog(false);
     return fetch(`http://localhost:3001/api/drinks/${recipeID}`, {
@@ -130,7 +135,7 @@ function Drink(props) {
           toast.current.show({
             severity: "success",
             summary: "OK",
-            detail: `Recipe succesfuly deleted`,
+            detail: `Recipe succesfully deleted`,
             life: 3000,
           });
 
@@ -154,6 +159,7 @@ function Drink(props) {
           });
         }
       }
+
       window.location.reload();
     });
   }
@@ -692,7 +698,7 @@ function Drink(props) {
                 <div className="d-flex flex-row gap-2">
                   <Button
                     severity="secondary"
-                    onClick={() => setEditRecipeForm(false)}
+                    onClick={handleClose}
                     style={{ borderRadius: "5px" }}
                   >
                     Close

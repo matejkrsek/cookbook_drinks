@@ -124,6 +124,10 @@ function DrinkList() {
     });
   };
 
+  const handleClose = () => {
+    setCreateRecipeForm(false);
+  };
+
   const handleSubmit = async (e) => {
     const form = e.currentTarget;
     e.preventDefault();
@@ -154,14 +158,27 @@ function DrinkList() {
             detail: `Recipe succesfully created`,
             life: 3000,
           });
+          const newList = [...drinkList];
+          newList.push(dataToServer);
+          setDrinkList(newList);
+          break;
+        }
+        case 404: {
+          toast.current.show({
+            severity: "danger",
+            summary: "Error",
+            detail: `error 404`,
+            life: 3000,
+          });
 
           break;
         }
         default: {
+          console.log(response.status);
           toast.current.show({
             severity: "danger",
             summary: "Fail",
-            detail: `Ingredients were not uploaded`,
+            detail: `Error on the way`,
             life: 3000,
           });
         }

@@ -139,7 +139,7 @@ let drinks = [
 ]; // in-memory databáze
 
 const validateIngredient = (ingredient) => {
-  const { name, amount, unit} = ingredient;
+  const { name, amount, unit } = ingredient;
   if (!name || typeof name !== "string") return "Invalid ingredient name";
   if (!amount || typeof amount !== "string") return "Invalid ingredient amount";
   if (!unit || typeof unit !== "string") return "Invalid ingredient unit";
@@ -154,8 +154,6 @@ const validateDrink = (drink) => {
   if (!Array.isArray(ingredients)) return "Invalid ingredients - not an array";
   if (ingredients.length < 2)
     return "Invalid ingredients - at least two required";
-  // if (ingredients.some((ing) => validateIngredient(ing) !== null))
-  //  return "Invalid ingredients - structure error";
   return null;
 }; // validace atributů receptu včetně validace atributu ingredience
 
