@@ -188,37 +188,32 @@ function IngredientList() {
 
   return (
     <div>
-      <br />
-      <div className="card">
-        <DataTable
-          value={ingredientsList}
-          dataKey="id"
-          paginator
-          rows={10}
-          rowsPerPageOptions={[5, 10, 25]}
-          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          currentPageReportTemplate="Show from {first} to {last} from total of {totalRecords} ingredients"
-          header={header}
-          filters={filters}
-          filterDisplay="row"
-          globalFilter={globalFilter}
-        >
-          <Column></Column>
-          <Column
-            field="id"
-            header="ID"
-            sortable
-            style={{ width: "25%" }}
-          ></Column>
-          <Column
-            field="name"
-            header="Name"
-            sortable
-            style={{ width: "25%" }}
-          ></Column>
-          <Column body={actionBodyTemplate} exportable={false}></Column>
-        </DataTable>
-      </div>
+      <DataTable
+        value={ingredientsList}
+        size="small"
+        dataKey="id"
+        paginator
+        rows={10}
+        rowsPerPageOptions={[5, 10, 25]}
+        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+        currentPageReportTemplate="Show from {first} to {last} from total of {totalRecords} ingredients"
+        header={header}
+        filters={filters}
+        filterDisplay="row"
+        stripedRows
+        globalFilter={globalFilter}
+      >
+        <Column></Column>
+        <Column></Column>
+        <Column></Column>
+        <Column
+          field="name"
+          header="Name"
+          sortable
+          style={{ width: "25%" }}
+        ></Column>
+        <Column body={actionBodyTemplate} exportable={false}></Column>
+      </DataTable>
 
       <Modal
         show={addIngredientForm}
