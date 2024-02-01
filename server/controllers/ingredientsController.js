@@ -42,7 +42,14 @@ let ingredients = [
 
 const validateSoloIngredient = (ingredient) => {
     const { name } = ingredient;
-    if (!name || typeof name !== 'string') return 'Invalid name';
+    if (!name || typeof name !== 'string') {
+        return 'Invalid name';
+    }
+    // kontrola unikátnosti jména
+    const isNameUnique = !ingredients.some(existingIngredient => existingIngredient.name.toLowerCase() === name.toLowerCase());
+    if (!isNameUnique) {
+        return `An ingredient with the name "${name}" already exists.`;
+    }
     return null;
 }; // Při tvorbě samotné ingredience mimo recept má ingredience jen jeden požadovaný atribut - jméno + se přidá id
 
