@@ -6,7 +6,6 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { useEffect } from "react";
 
 function App() {
   let navigate = useNavigate();
@@ -15,7 +14,7 @@ function App() {
     <div className="App">
       <Navbar fixed="top" expand={"sm"} bg="dark" variant="dark">
         <Container fluid>
-          <Navbar.Brand onClick={() => navigate("/home")}>
+          <Navbar.Brand onClick={() => navigate("/")}>
             The world n. 1 drink cookbook
           </Navbar.Brand>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} />
@@ -28,10 +27,10 @@ function App() {
             <Offcanvas.Body>
               <Nav
                 variant="underline"
-                defaultActiveKey="/home"
+                defaultActiveKey="/"
                 className="justify-content-end flex-grow-1 pe-3"
               >
-                <Nav.Link onClick={() => navigate("/home")}>Home</Nav.Link>
+                <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
                 <Nav.Link onClick={() => navigate("/drinklist")}>
                   Our drinks
                 </Nav.Link>
