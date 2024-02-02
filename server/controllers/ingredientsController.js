@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require("uuid");
+const drinksController = require('./drinksController');
 
 let ingredients = [
   { name: "absinth", id: "1" },
@@ -71,11 +72,24 @@ const ingredientsController = {
         res.status(201).json(newIngredient);
     },
     deleteIngredient: (req, res) => {
-        const index = ingredients.findIndex(i => i.id === req.params.id);
-        if (index === -1) return res.status(404).send('Ingredient not found');
-
-        ingredients.splice(index, 1);
-        res.status(204).send();
+        const ingredientId = req.params.id;
+        const ingredientIndex = ingredients.findIndex(ingredient => ingredient.id === ingredientId);
+    
+        if (ingredientIndex === -1) {
+            return res.status(404).send('Ingredient not found');
+        }
+    
+        // Získat jméno ingredience
+        const ingredientName = ingredients[ingredientIndex].name;
+    
+        // Kontrola použití ingredience v existujícím drinku
+        if (drinksController.isIngredientUsed(ingredientName)) {
+            return res.status(400).send('Cannot delete this ingredient as it is used in one or more drinks.');
+        }
+    
+        // Když ingredience není použita, smaže se
+        ingredients.splice(ingredientIndex, 1);
+        res.status(204).send('Ingredient deleted');
     }
 };
 
