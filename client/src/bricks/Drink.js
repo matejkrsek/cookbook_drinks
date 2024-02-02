@@ -29,6 +29,7 @@ function Drink(props) {
   const [formData, setFormData] = useState({
     name: props.drink.name,
     author: props.drink.author,
+    type: props.drink.type,
     procedure: props.drink.procedure,
     ingredients: [
       {
@@ -224,11 +225,9 @@ function Drink(props) {
       <div>
         <Card
           style={{
-            // Include padding and border in the width
-            padding: "8px", // Add padding for better spacing
-            boxSizing: "border-box",
             margin: "10px",
-            width: "330px",
+            minWidth: "250px",
+            maxWidth: "350px",
             height: "300px",
             borderColor: "black",
             borderWidth: 3,
@@ -296,14 +295,27 @@ function Drink(props) {
               textOverflow: "ellipsis",
             }}
           >
-            <div
-              style={{
-                fontStyle: "italic",
-                marginBottom: "10px",
-                fontSize: "small",
-              }}
-            >
-              {"Author: "} {props.drink.author}
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div
+                style={{
+                  fontStyle: "italic",
+                  fontWeight: "bold",
+                  marginBottom: "10px",
+                  fontSize: "small",
+                }}
+              >
+                {"Author: "} {props.drink.author}
+              </div>
+              <div
+                style={{
+                  fontStyle: "italic",
+                  fontWeight: "bold",
+                  marginBottom: "10px",
+                  fontSize: "small",
+                }}
+              >
+                {"Type: "} {props.drink.type}
+              </div>
             </div>
             <div>{props.drink.procedure}</div>
           </Card.Body>
@@ -353,7 +365,7 @@ function Drink(props) {
               <Modal.Title>Edit recipe</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form.Group className="mb-3">
+              <Form.Group>
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   type="text"
@@ -366,17 +378,35 @@ function Drink(props) {
                   Write from 1 to 25 characters
                 </Form.Control.Feedback>
 
-                <Form.Label>Author</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={formData.author}
-                  onChange={(e) => setField("author", e.target.value)}
-                  maxLength={50}
-                  required
-                />
-                <Form.Control.Feedback type="invalid">
-                  Write from 1 to 25 characters
-                </Form.Control.Feedback>
+                <Row>
+                  <Form.Group as={Col} className="mb-3">
+                    <Form.Label>Author</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={formData.author}
+                      onChange={(e) => setField("author", e.target.value)}
+                      maxLength={30}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Write from 1 to 25 characters
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group as={Col} className="mb-3">
+                    <Form.Label>Type</Form.Label>
+                    <Form.Select
+                      value={formData.type}
+                      onChange={(e) => setField("type", e.target.value)}
+                      required
+                    >
+                      <option value="" disabled>
+                        Type
+                      </option>
+                      <option value={"short"}>short</option>
+                      <option value={"long"}>long</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Row>
                 <Form.Label>Procedure</Form.Label>
                 <Form.Control
                   as="textarea"
@@ -392,7 +422,7 @@ function Drink(props) {
               </Form.Group>
 
               <Row>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Ingredient</Form.Label>
                   <Form.Select
                     type="text"
@@ -412,7 +442,7 @@ function Drink(props) {
                     ))}
                   </Form.Select>
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Amount</Form.Label>
                   <Form.Control
                     type="number"
@@ -423,7 +453,7 @@ function Drink(props) {
                     required
                   />
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Unit</Form.Label>
                   <Form.Select
                     value={formData.ingredients[0].unit}
@@ -445,7 +475,7 @@ function Drink(props) {
               </Row>
 
               <Row>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Ingredient</Form.Label>
                   <Form.Select
                     type="text"
@@ -465,7 +495,7 @@ function Drink(props) {
                     ))}
                   </Form.Select>
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Amount</Form.Label>
                   <Form.Control
                     type="number"
@@ -476,7 +506,7 @@ function Drink(props) {
                     required
                   />
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Unit</Form.Label>
                   <Form.Select
                     value={formData.ingredients[1].unit}
@@ -497,7 +527,7 @@ function Drink(props) {
                 </Form.Group>
               </Row>
               <Row>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Ingredient</Form.Label>
                   <Form.Select
                     type="text"
@@ -516,7 +546,7 @@ function Drink(props) {
                     ))}
                   </Form.Select>
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Amount</Form.Label>
                   <Form.Control
                     type="number"
@@ -526,7 +556,7 @@ function Drink(props) {
                     }
                   />
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Unit</Form.Label>
                   <Form.Select
                     value={formData.ingredients[2].unit}
@@ -546,7 +576,7 @@ function Drink(props) {
                 </Form.Group>
               </Row>
               <Row>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Ingredient</Form.Label>
                   <Form.Select
                     type="text"
@@ -565,7 +595,7 @@ function Drink(props) {
                     ))}
                   </Form.Select>
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Amount</Form.Label>
                   <Form.Control
                     type="number"
@@ -575,7 +605,7 @@ function Drink(props) {
                     }
                   />
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Unit</Form.Label>
                   <Form.Select
                     value={formData.ingredients[3].unit}
@@ -595,7 +625,7 @@ function Drink(props) {
                 </Form.Group>
               </Row>
               <Row>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Ingredient</Form.Label>
                   <Form.Select
                     type="text"
@@ -614,7 +644,7 @@ function Drink(props) {
                     ))}
                   </Form.Select>
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Amount</Form.Label>
                   <Form.Control
                     type="number"
@@ -624,7 +654,7 @@ function Drink(props) {
                     }
                   />
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Unit</Form.Label>
                   <Form.Select
                     value={formData.ingredients[4].unit}
@@ -644,7 +674,7 @@ function Drink(props) {
                 </Form.Group>
               </Row>
               <Row>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Ingredient</Form.Label>
                   <Form.Select
                     type="text"
@@ -663,7 +693,7 @@ function Drink(props) {
                     ))}
                   </Form.Select>
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Amount</Form.Label>
                   <Form.Control
                     type="number"
@@ -673,7 +703,7 @@ function Drink(props) {
                     }
                   />
                 </Form.Group>
-                <Form.Group as={Col} className="mb-3">
+                <Form.Group as={Col}>
                   <Form.Label>Unit</Form.Label>
                   <Form.Select
                     value={formData.ingredients[5].unit}
@@ -725,10 +755,17 @@ function Drink(props) {
           onHide={() => setDrinkDetail(false)}
         >
           <div className="confirmation-content">
-            <div></div>
-            <span style={{ fontWeight: "bold" }}>Author: </span>{" "}
-            <span>{props.drink.author}</span>
-            <br></br>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span>
+                <span style={{ fontWeight: "bold" }}>Author: </span>{" "}
+                <span>{props.drink.author}</span>
+              </span>
+
+              <span style={{ marginRight: "150px" }}>
+                <span style={{ fontWeight: "bold" }}>Type: </span>
+                <span>{props.drink.type}</span>
+              </span>
+            </div>
             <br></br>
             <span style={{ fontWeight: "bold" }}>Procedure: </span>{" "}
             <span>{props.drink.procedure}</span>

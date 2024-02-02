@@ -6,18 +6,14 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import { useEffect } from "react";
 
 function App() {
   let navigate = useNavigate();
+
   return (
     <div className="App">
-      <Navbar
-        fixed="top"
-        expand={"sm"}
-        className="mb-3"
-        bg="dark"
-        variant="dark"
-      >
+      <Navbar fixed="top" expand={"sm"} bg="dark" variant="dark">
         <Container fluid>
           <Navbar.Brand onClick={() => navigate("/home")}>
             The world n. 1 drink cookbook
@@ -47,7 +43,6 @@ function App() {
           </Navbar.Offcanvas>
         </Container>
       </Navbar>
-
       <Outlet></Outlet>
     </div>
   );

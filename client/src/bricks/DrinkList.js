@@ -5,11 +5,12 @@ import { Button } from "primereact/button";
 import Form from "react-bootstrap/Form";
 import Icon from "@mdi/react";
 import { useState, useMemo } from "react";
-import { mdiMagnify } from "@mdi/js";
+import { mdiFilter, mdiFilterMenuOutline, mdiMagnify } from "@mdi/js";
 import { Col, Modal, Row } from "react-bootstrap";
 import { Toast } from "primereact/toast";
 
 function DrinkList() {
+  const [filter, setFilter] = useState("");
   const [validated, setValidated] = useState(false);
   const [searchBy, setSearchBy] = useState("");
   const [createRecipeForm, setCreateRecipeForm] = useState(false);
@@ -19,6 +20,7 @@ function DrinkList() {
   const [formData, setFormData] = useState({
     name: "",
     author: "",
+    type: "",
     procedure: "",
     ingredients: [
       {
@@ -190,14 +192,18 @@ function DrinkList() {
   //definuje proměnnou filteredDrinkList, tedy ty recepty, které uživatel vyhledává v searchbaru (pokud nevyhledává nic, definuje je jako všechny recepty)
   const filteredDrinkList = useMemo(() => {
     return drinkList.filter((item) => {
-      return (
-        item.name.toLocaleLowerCase().includes(searchBy.toLocaleLowerCase()) ||
-        item.procedure
-          .toLocaleLowerCase()
-          .includes(searchBy.toLocaleLowerCase())
-      );
+      // Existing conditions
+      const existingConditions =
+        item.name.toLowerCase().includes(searchBy.toLowerCase()) ||
+        item.procedure.toLowerCase().includes(searchBy.toLowerCase());
+
+      // New condition: Include if the filter is not an empty string and item.type matches filter
+      const typeCondition = filter !== "" ? item.type === filter : true;
+
+      // Return the result of combined conditions
+      return existingConditions && typeCondition;
     });
-  }, [searchBy, drinkList]);
+  }, [searchBy, drinkList, filter]);
 
   //vyhledávání (search bar)
   function handleSearch(searchData) {
@@ -205,6 +211,8 @@ function DrinkList() {
     // = vezmi searchData, tedy všechno, co bylo zadáno do formuláře, zaměř se na searchInput (.target["searchInput"]) a vem jeho hodnotu (.value). Tu nastav jako setSeatchBy...
     setSearchBy(searchData.target["searchInput"].value);
   }
+
+  function handleFilter() {}
   //vyhledávání (search bar) 2
   function handleSearchDelete(event) {
     if (!event.target.value) setSearchBy("");
@@ -217,7 +225,7 @@ function DrinkList() {
           return (
             <div
               class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3"
-              style={{ paddingBottom: "8px" }}
+              style={{ padding: "8px" }}
             >
               <Drink
                 key={drink.id}
@@ -238,45 +246,74 @@ function DrinkList() {
         <Navbar
           style={{
             backgroundColor: "lightyellow",
+            gap: "5px",
           }}
+          className="flex-md-row flex-column"
         >
-          <div className="container-fluid">
-            <Navbar.Brand
-              style={{
-                fontSize: "1.5rem",
-                fontWeight: "bold",
-                //  backgroundColor: "lightyellow",
-              }}
+          <Navbar.Brand
+            style={{
+              paddingLeft: "10px",
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+              marginRight: "auto",
+            }}
+          >
+            List of our drinks
+          </Navbar.Brand>
+
+          <Button
+            severity="success"
+            onClick={() => setCreateRecipeForm(true)}
+            style={{ borderRadius: "5px", marginRight: "30px" }}
+          >
+            Create recipe
+          </Button>
+
+          <Form
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: "5px",
+              marginRight: "30px",
+            }}
+          >
+            <Form.Select
+              style={{ height: "42px" }}
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              required
             >
-              List of our drinks
-            </Navbar.Brand>
-            <div className="d-flex gap-2">
-              <Button
-                severity="success"
-                onClick={() => setCreateRecipeForm(true)}
-                style={{ borderRadius: "5px" }}
-              >
-                Create recipe
-              </Button>
-              <Form className="d-flex gap-2" onSubmit={handleSearch}>
-                <Form.Control
-                  id={"searchInput"}
-                  style={{ maxWidth: "150px" }}
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                  onChange={handleSearchDelete}
-                />
-                <Button
-                  style={{ marginRight: "8px", borderRadius: "5px" }}
-                  severity="success"
-                  type="submit"
-                >
-                  <Icon size={1} path={mdiMagnify} />
-                </Button>
-              </Form>
-            </div>
-          </div>
+              <option value="" disabled>
+                All
+              </option>
+              <option value={""}>all</option>
+              <option value={"short"}>short</option>
+              <option value={"long"}>long</option>
+            </Form.Select>
+            <Icon path={mdiFilterMenuOutline} size={3} />
+          </Form>
+
+          <Form
+            style={{ display: "flex", gap: "5px", marginRight: "30px" }}
+            onSubmit={handleSearch}
+          >
+            <Form.Control
+              id={"searchInput"}
+              style={{ maxWidth: "150px" }}
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              onChange={handleSearchDelete}
+            />
+            <Button
+              style={{ borderRadius: "5px" }}
+              severity="success"
+              type="submit"
+            >
+              <Icon size={1} path={mdiMagnify} />
+            </Button>
+          </Form>
         </Navbar>
 
         {getDrinkList(filteredDrinkList)}
@@ -307,18 +344,36 @@ function DrinkList() {
                 <Form.Control.Feedback type="invalid">
                   Write from 1 to 25 characters
                 </Form.Control.Feedback>
+                <Row>
+                  <Form.Group as={Col} className="mb-3">
+                    <Form.Label>Author</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={formData.author}
+                      onChange={(e) => setField("author", e.target.value)}
+                      maxLength={30}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Write from 1 to 25 characters
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group as={Col} className="mb-3">
+                    <Form.Label>Type</Form.Label>
+                    <Form.Select
+                      value={formData.type}
+                      onChange={(e) => setField("type", e.target.value)}
+                      required
+                    >
+                      <option value="" disabled>
+                        Type
+                      </option>
+                      <option value={"short"}>short</option>
+                      <option value={"long"}>long</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Row>
 
-                <Form.Label>Author</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={formData.author}
-                  onChange={(e) => setField("author", e.target.value)}
-                  maxLength={30}
-                  required
-                />
-                <Form.Control.Feedback type="invalid">
-                  Write from 1 to 25 characters
-                </Form.Control.Feedback>
                 <Form.Label>Procedure</Form.Label>
                 <Form.Control
                   as="textarea"

@@ -4,6 +4,7 @@ let drinks = [
   {
     author: "Milan Novotný",
     name: "Acapulco rink",
+    type: "long",
     procedure:
       "Add ice to shaker with all ingredients. Shake thoroughly and long. Then pour through a strainer into pre-chilled cocktail glasses. Finally, garnish with lime zest",
     id: "8fd09f3f5e2b4l23",
@@ -19,6 +20,7 @@ let drinks = [
   {
     author: "Martin Smith",
     name: "Lemon Drop",
+    type: "short",
     procedure:
       "Add all ingredients to a shaker with ice. Wipe the outer edge of the glass with lemon and sprinkle with sugar. Strain and carefully pour the contents of the shaker into the glass.",
     id: "8fdq9f3f5e2b432et",
@@ -34,6 +36,7 @@ let drinks = [
   {
     author: "John Bacardi",
     name: "Long Island",
+    type: "short",
     procedure:
       "Gradually pour all the ingredients into the glass and add ice. Finally, pour cola and garnish with lemon wedges.",
     id: "8fd09f3f5emb432x",
@@ -49,6 +52,7 @@ let drinks = [
   {
     author: "Muela Hanioy",
     name: "Mai Tai",
+    type: "short",
     procedure:
       "Add all ingredients and ice except dark rum and grenadine to a shaker. Shake briefly and pour into a glass. Finally, add ice and dark rum with grenadine and garnish.",
     id: "8fd09y3f5e2b432p",
@@ -64,6 +68,7 @@ let drinks = [
   {
     author: "George Clooney",
     name: "Manhattan Drink",
+    type: "short",
     procedure:
       "Put all the ingredients in a shaker. After mixing, pour through a strainer into a cocktail glass. Finally, garnish with a cherry and serve without a straw.",
     id: "8fd09n3f5e2b432q",
@@ -79,6 +84,7 @@ let drinks = [
   {
     author: "John Bacardi younger",
     name: "Long Stand",
+    type: "long",
     procedure:
       "Pour all the ingredients into the glass and add ice. Finally, pour cola and garnish with lemon wedges. Cheers!",
     id: "8fd09f3f5emb432l",
@@ -94,6 +100,7 @@ let drinks = [
   {
     author: "Marria Bloom",
     name: "Manhattan Squeeze",
+    type: "short",
     procedure:
       "Put all the ingredients in a shaker. After mixing, pour through a strainer into a cocktail glass. Finally, garnish with a cherry and serve with a big huge  smile.",
     id: "8fd09n3f5e2b432m",
@@ -109,6 +116,7 @@ let drinks = [
   {
     author: "Mike Clooney",
     name: "Bahama beach",
+    type: "short",
     procedure:
       "Put all the ingredients in a shaker. Pour through a strainer into a cocktail glass. Finally, garnish with a cherry and serve without a straw. There you go!",
     id: "8fd09n3f5e2b432y",
@@ -124,6 +132,7 @@ let drinks = [
   {
     author: "George Black",
     name: "Manhattan Street",
+    type: "long",
     procedure:
       "Put all the ingredients in a shaker. After mixing, pour through a strainer into a cocktail glass.",
     id: "8fd09n3f5e2b432a",
@@ -147,9 +156,10 @@ const validateIngredient = (ingredient) => {
 }; // validace ingredience přidané do receptu včetně vlastností
 
 const validateDrink = (drink) => {
-  const { name, author, procedure, ingredients } = drink;
+  const { name, author, type, procedure, ingredients } = drink;
   if (!name || typeof name !== "string") return "Invalid name";
   if (!author || typeof author !== "string") return "Invalid author";
+  if (!type || typeof type !== "string") return "Invalid type";
   if (!procedure || typeof procedure !== "string") return "Invalid procedure";
   if (!Array.isArray(ingredients)) return "Invalid ingredients - not an array";
   if (ingredients.length < 2)

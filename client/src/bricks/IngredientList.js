@@ -220,7 +220,7 @@ function IngredientList() {
             life: 3000,
           });
           const responseJson = await response.json();
-          console.log(responseJson);
+         // console.log(responseJson);
           ingredientsList.push(responseJson);
 
           break;
