@@ -206,6 +206,15 @@ const drinksController = {
     drinks.splice(drinkIndex, 1);
     res.status(204).send();
   },
+    // ingredientsController - deleteIngredient, kontrola použití ingredience
+  isIngredientUsed: (ingredientName) => {
+    return drinks.some(drink =>
+      drink.ingredients.some(ingredient =>
+        ingredient.name.toLowerCase() === ingredientName.toLowerCase() &&
+        ingredient.name !== "" // Zvažovat pouze ingredience, které mají název
+      )
+    );
+  }
 };
 
 module.exports = drinksController;
