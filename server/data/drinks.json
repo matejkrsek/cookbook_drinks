@@ -328,5 +328,44 @@
         "unit": ""
       }
     ]
+  },
+  {
+    "name": "Old fashioned",
+    "author": "Kristian Kolumber",
+    "type": "long",
+    "procedure": "Put the sugar, bitters and water in a small tumbler. Mix until the sugar dissolves if using granulated. Fill your glass with ice and stir in the whisky. Add a splash of soda water if you like and mix. Garnish with the orange.",
+    "ingredients": [
+      {
+        "name": "sugar syrup",
+        "amount": 2,
+        "unit": "tablespoon"
+      },
+      {
+        "name": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      },
+      {
+        "name": "water",
+        "amount": 1,
+        "unit": "splash"
+      },
+      {
+        "name": "bourbon",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "name": "orange",
+        "amount": 1,
+        "unit": "slice"
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      }
+    ],
+    "id": "b3782f08-19d9-4923-9c43-021074bf709a"
   }
 ]
