@@ -1,9 +1,5 @@
 [
   {
-    "name": "absinth",
-    "id": "1"
-  },
-  {
     "name": "amaretto",
     "id": "2"
   },
@@ -150,5 +146,9 @@
   {
     "name": "orange",
     "id": "a4b30b45-92f0-4c2f-8759-0740c571d8f1"
+  },
+  {
+    "name": "water",
+    "id": "18c10f9c-6f6a-436b-a7ac-60ff6e4ff44b"
   }
 ]

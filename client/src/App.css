@@ -35,3 +35,7 @@
 .test {
   background-color: blue;
 }
+
+.required-label {
+  color: gray; /* Set the desired color for the required label */
+}

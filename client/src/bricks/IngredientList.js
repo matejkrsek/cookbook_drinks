@@ -33,9 +33,6 @@ function IngredientList() {
     }).then(async (response) => {
       const serverIngredientsList = await response.json();
       setIngredientsList(serverIngredientsList);
-      // console.log(ingredientsList);
-      // console.log(response);
-      //console.log(serverIngredientsList);
     });
   }, []);
 

@@ -94,7 +94,9 @@ function Drink(props) {
       ...formData,
     };
     // form je současný vstup uživatele, checkValidity se dívá na podmínky stanovené v jednotlibých Form.Control, jako např. required, maxLength, min, max atd. a vyhodnocuje, zda je celý vstup validní... pak vrací true
-    if (!form.checkValidity()) {
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
       setValidated(true);
       return;
     }

@@ -65,18 +65,23 @@ function DrinkFormBody(props) {
         {[...Array(6)].map((_, index) => (
           <Row key={index}>
             <Form.Group as={Col}>
-              <Form.Label>Ingredient</Form.Label>
+              <Form.Label>
+                Ingredient
+                {index === 0 || index === 1 ? (
+                  <span className="required-label"> (required)</span>
+                ) : (
+                  ""
+                )}
+              </Form.Label>
               <Form.Select
                 type="text"
                 value={props.formData.ingredients[index].name}
                 onChange={(e) =>
                   props.setField(`ingredients[${index}].name`, e.target.value)
                 }
-                required={index === 0 || index === 1} // Nastaví required pro index 0 a 1
+                required={index === 0 || index === 1}
               >
-                <option value="" disabled>
-                  Select an ingredient
-                </option>
+                <option value="">Select an ingredient</option>
                 {props.ingredientsList.map((ingredient) => (
                   <option key={ingredient.id} value={ingredient.name}>
                     {ingredient.name}
@@ -88,25 +93,40 @@ function DrinkFormBody(props) {
               <Form.Label>Amount</Form.Label>
               <Form.Control
                 type="number"
-                value={props.formData.ingredients[index].amount}
-                onChange={(e) =>
-                  props.setField(`ingredients[${index}].amount`, e.target.value)
+                value={
+                  props.formData.ingredients[index].name === ""
+                    ? ""
+                    : props.formData.ingredients[index].amount
                 }
-                required={index === 0 || index === 1} // Nastaví required pro index 0 a 1
+                onChange={(e) =>
+                  props.setField(
+                    `ingredients[${index}].amount`,
+                    Math.max(0, e.target.value)
+                  )
+                }
+                required={index === 0 || index === 1}
+                min="0"
               />
             </Form.Group>
             <Form.Group as={Col}>
               <Form.Label>Unit</Form.Label>
               <Form.Select
-                value={props.formData.ingredients[index].unit}
+                value={
+                  props.formData.ingredients[index].name === ""
+                    ? 0
+                    : props.formData.ingredients[index].unit
+                }
                 onChange={(e) =>
                   props.setField(`ingredients[${index}].unit`, e.target.value)
                 }
-                required={index === 0 || index === 1} // Nastaví required pro index 0 a 1
+                required={
+                  index === 0 ||
+                  index === 1 ||
+                  //  props.formData.ingredients[index].amount !== 0 ||
+                  props.formData.ingredients[index].name !== ""
+                } // Nastaví required pro index 0 a 1
               >
-                <option value="" disabled>
-                  Unit
-                </option>
+                <option value="">Unit</option>
                 <option value={"g"}>g</option>
                 <option value={"pinch"}>pinch</option>
                 <option value={"teaspoon"}>teaspoon</option>
