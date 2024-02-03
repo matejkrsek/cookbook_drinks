@@ -13,8 +13,6 @@ import { Dialog } from "primereact/dialog";
 import "primereact/resources/themes/saga-blue/theme.css"; // Replace with your chosen theme
 import "primereact/resources/primereact.min.css";
 import { Modal } from "react-bootstrap";
-import { Row } from "react-bootstrap";
-import Col from "react-bootstrap/esm/Col";
 import { Toast } from "primereact/toast";
 import DrinkFormBody from "./DrinkFormBody";
 

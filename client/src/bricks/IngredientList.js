@@ -124,15 +124,27 @@ function IngredientList() {
             detail: `Ingredient ${ingredient.name} was succesfuly deleted`,
             life: 4000,
           });
-
+          const updatedIngredientsList = ingredientsList.filter(
+            (ingredientX) => ingredientX.id !== ingredient.id
+          );
+          setIngredientsList(updatedIngredientsList);
           break;
         }
         case 404: {
           toast.current.show({
-            severity: "danger",
+            severity: "error",
             summary: "Fail",
             detail: `Ingredient not found`,
             life: 3000,
+          });
+          break;
+        }
+        case 400: {
+          toast.current.show({
+            severity: "error",
+            summary: "Fail",
+            detail: `Can not delete this ingredient. It is used in our recipes.`,
+            life: 4000,
           });
           break;
         }
@@ -145,10 +157,6 @@ function IngredientList() {
           });
         }
       }
-      const updatedIngredientsList = ingredientsList.filter(
-        (ingredientX) => ingredientX.id !== ingredient.id
-      );
-      setIngredientsList(updatedIngredientsList);
     });
   }
   const newIngredientDialogFooter = (
