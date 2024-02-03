@@ -1,0 +1,154 @@
+[
+  {
+    "name": "absinth",
+    "id": "1"
+  },
+  {
+    "name": "amaretto",
+    "id": "2"
+  },
+  {
+    "name": "apple juice",
+    "id": "3"
+  },
+  {
+    "name": "baileys",
+    "id": "4"
+  },
+  {
+    "name": "becherovka",
+    "id": "5"
+  },
+  {
+    "name": "bourbon",
+    "id": "6"
+  },
+  {
+    "name": "campari",
+    "id": "7"
+  },
+  {
+    "name": "cinzano",
+    "id": "8"
+  },
+  {
+    "name": "coca cola",
+    "id": "9"
+  },
+  {
+    "name": "cognac",
+    "id": "10"
+  },
+  {
+    "name": "cranberry juice",
+    "id": "11"
+  },
+  {
+    "name": "curaccao",
+    "id": "12"
+  },
+  {
+    "name": "fernet",
+    "id": "13"
+  },
+  {
+    "name": "gin",
+    "id": "14"
+  },
+  {
+    "name": "grenadine",
+    "id": "15"
+  },
+  {
+    "name": "ice",
+    "id": "16"
+  },
+  {
+    "name": "jaegermeister",
+    "id": "17"
+  },
+  {
+    "name": "lemon juice",
+    "id": "18"
+  },
+  {
+    "name": "lime",
+    "id": "19"
+  },
+  {
+    "name": "mojito",
+    "id": "20"
+  },
+  {
+    "name": "orange juice",
+    "id": "21"
+  },
+  {
+    "name": "pepper",
+    "id": "22"
+  },
+  {
+    "name": "pineapple juice",
+    "id": "23"
+  },
+  {
+    "name": "redbull",
+    "id": "100"
+  },
+  {
+    "name": "rum dark",
+    "id": "24"
+  },
+  {
+    "name": "rum white",
+    "id": "25"
+  },
+  {
+    "name": "salt",
+    "id": "26"
+  },
+  {
+    "name": "sect",
+    "id": "27"
+  },
+  {
+    "name": "strawberry juice",
+    "id": "28"
+  },
+  {
+    "name": "stroh",
+    "id": "29"
+  },
+  {
+    "name": "sugar",
+    "id": "31"
+  },
+  {
+    "name": "tatra tea",
+    "id": "30"
+  },
+  {
+    "name": "tequila",
+    "id": "32"
+  },
+  {
+    "name": "vodka",
+    "id": "33"
+  },
+  {
+    "name": "whiskey",
+    "id": "34"
+  },
+  {
+    "name": "wine red",
+    "id": "35"
+  },
+  {
+    "name": "wine white",
+    "id": "36"
+  },
+  {
+    "name": "orange",
+    "id": "a4b30b45-92f0-4c2f-8759-0740c571d8f1"
+  }
+]

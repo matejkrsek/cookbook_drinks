@@ -1,0 +1,421 @@
+[
+  {
+    "author": "Milan Novotný",
+    "name": "Acapulco rink",
+    "type": "long",
+    "procedure": "Add ice to shaker with all ingredients. Shake thoroughly and long. Then pour through a strainer into pre-chilled cocktail glasses. Finally, garnish with lime zest",
+    "id": "8fd09f3f5e2b4l23",
+    "ingredients": [
+      {
+        "name": "lemon juice",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "sekt",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "led",
+        "amount": 3,
+        "unit": "cube"
+      },
+      {
+        "name": "",
+        "amount": 0,
+        "unit": ""
+      },
+      {
+        "name": "",
+        "amount": 0,
+        "unit": ""
+      },
+      {
+        "name": "",
+        "amount": 0,
+        "unit": ""
+      }
+    ]
+  },
+  {
+    "author": "Martin Smith",
+    "name": "Lemon Drop",
+    "type": "short",
+    "procedure": "Add all ingredients to a shaker with ice. Wipe the outer edge of the glass with lemon and sprinkle with sugar. Strain and carefully pour the contents of the shaker into the glass.",
+    "id": "8fdq9f3f5e2b432et",
+    "ingredients": [
+      {
+        "name": "vodka",
+        "amount": 30,
+        "unit": "ml",
+        "id": "33"
+      },
+      {
+        "name": "lemon juice",
+        "amount": 3,
+        "unit": "ml",
+        "id": "18"
+      },
+      {
+        "name": "redbull",
+        "amount": 150,
+        "unit": "ml",
+        "id": "100"
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      }
+    ]
+  },
+  {
+    "author": "John Bacardi",
+    "name": "Long Island",
+    "type": "short",
+    "procedure": "Gradually pour all the ingredients into the glass and add ice. Finally, pour cola and garnish with lemon wedges.",
+    "id": "8fd09f3f5emb432x",
+    "ingredients": [
+      {
+        "name": "gin",
+        "amount": 20,
+        "unit": "ml",
+        "id": "14"
+      },
+      {
+        "name": "white rum",
+        "amount": 20,
+        "unit": "ml",
+        "id": "25"
+      },
+      {
+        "name": "vodka",
+        "amount": 20,
+        "unit": "ml",
+        "id": "33"
+      },
+      {
+        "name": "lemon juice",
+        "amount": 20,
+        "unit": "ml",
+        "id": "18"
+      },
+      {
+        "name": "coca cola",
+        "amount": 200,
+        "unit": "ml",
+        "id": "9"
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      }
+    ]
+  },
+  {
+    "author": "Muela Hanioy",
+    "name": "Mai Tai",
+    "type": "short",
+    "procedure": "Add all ingredients and ice except dark rum and grenadine to a shaker. Shake briefly and pour into a glass. Finally, add ice and dark rum with grenadine and garnish.",
+    "id": "8fd09y3f5e2b432p",
+    "ingredients": [
+      {
+        "name": "curaccao",
+        "amount": 50,
+        "unit": "ml",
+        "id": "12"
+      },
+      {
+        "name": "rum white",
+        "amount": 50,
+        "unit": "ml",
+        "id": "25"
+      },
+      {
+        "name": "rum dark",
+        "amount": 50,
+        "unit": "ml",
+        "id": "24"
+      },
+      {
+        "name": "lime",
+        "amount": 30,
+        "unit": "ml",
+        "id": "19"
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      }
+    ]
+  },
+  {
+    "author": "George Clooney",
+    "name": "Manhattan Drink",
+    "type": "short",
+    "procedure": "Put all the ingredients in a shaker. After mixing, pour through a strainer into a cocktail glass. Finally, garnish with a cherry and serve without a straw.",
+    "id": "8fd09n3f5e2b432q",
+    "ingredients": [
+      {
+        "name": "whiskey",
+        "amount": 50,
+        "unit": "ml",
+        "id": "34"
+      },
+      {
+        "name": "bourbon",
+        "amount": 50,
+        "unit": "ml",
+        "id": "6"
+      },
+      {
+        "name": "ice",
+        "amount": 3,
+        "unit": "cube",
+        "id": "16"
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      }
+    ]
+  },
+  {
+    "author": "John Bacardi younger",
+    "name": "Long Stand",
+    "type": "long",
+    "procedure": "Pour all the ingredients into the glass and add ice. Finally, pour cola and garnish with lemon wedges. Cheers!",
+    "id": "8fd09f3f5emb432l",
+    "ingredients": [
+      {
+        "name": "gin",
+        "amount": 20,
+        "unit": "ml",
+        "id": "14"
+      },
+      {
+        "name": "white rum",
+        "amount": 20,
+        "unit": "ml",
+        "id": "25"
+      },
+      {
+        "name": "vodka",
+        "amount": 20,
+        "unit": "ml",
+        "id": "33"
+      },
+      {
+        "name": "lemon juice",
+        "amount": 20,
+        "unit": "ml",
+        "id": "18"
+      },
+      {
+        "name": "coca cola",
+        "amount": 200,
+        "unit": "ml",
+        "id": "9"
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      }
+    ]
+  },
+  {
+    "author": "Marria Bloom",
+    "name": "Manhattan Squeeze",
+    "type": "short",
+    "procedure": "Put all the ingredients in a shaker. After mixing, pour through a strainer into a cocktail glass. Finally, garnish with a cherry and serve with a big huge  smile.",
+    "id": "8fd09n3f5e2b432m",
+    "ingredients": [
+      {
+        "name": "whiskey",
+        "amount": 50,
+        "unit": "ml",
+        "id": "34"
+      },
+      {
+        "name": "bourbon",
+        "amount": 50,
+        "unit": "ml",
+        "id": "6"
+      },
+      {
+        "name": "ice",
+        "amount": 3,
+        "unit": "cube",
+        "id": "16"
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      }
+    ]
+  },
+  {
+    "author": "Mike Clooney",
+    "name": "Bahama beach",
+    "type": "short",
+    "procedure": "Put all the ingredients in a shaker. Pour through a strainer into a cocktail glass. Finally, garnish with a cherry and serve without a straw. There you go!",
+    "id": "8fd09n3f5e2b432y",
+    "ingredients": [
+      {
+        "name": "whiskey",
+        "amount": 50,
+        "unit": "ml",
+        "id": "34"
+      },
+      {
+        "name": "bourbon",
+        "amount": 50,
+        "unit": "ml",
+        "id": "6"
+      },
+      {
+        "name": "ice",
+        "amount": 3,
+        "unit": "cube",
+        "id": "16"
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      }
+    ]
+  },
+  {
+    "author": "George Black",
+    "name": "Manhattan Street",
+    "type": "long",
+    "procedure": "Put all the ingredients in a shaker. After mixing, pour through a strainer into a cocktail glass.",
+    "id": "8fd09n3f5e2b432a",
+    "ingredients": [
+      {
+        "name": "whiskey",
+        "amount": 50,
+        "unit": "ml",
+        "id": "34"
+      },
+      {
+        "name": "bourbon",
+        "amount": 50,
+        "unit": "ml",
+        "id": "6"
+      },
+      {
+        "name": "ice",
+        "amount": 3,
+        "unit": "cube",
+        "id": "16"
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      }
+    ]
+  },
+  {
+    "name": "Old fashioned",
+    "author": "Kristian Kolumber",
+    "type": "long",
+    "procedure": "Put the sugar, bitters and water in a small tumbler. Mix until the sugar dissolves if using granulated. Fill your glass with ice and stir in the whisky. Add a splash of soda water if you like and mix. Garnish with the orange.",
+    "ingredients": [
+      {
+        "name": "sugar syrup",
+        "amount": 2,
+        "unit": "tablespoon"
+      },
+      {
+        "name": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      },
+      {
+        "name": "water",
+        "amount": 1,
+        "unit": "splash"
+      },
+      {
+        "name": "bourbon",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "name": "orange",
+        "amount": 1,
+        "unit": "slice"
+      },
+      {
+        "name": "",
+        "amount": "",
+        "unit": ""
+      }
+    ],
+    "id": "b3782f08-19d9-4923-9c43-021074bf709a"
+  }
+]

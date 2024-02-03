@@ -1,96 +1,112 @@
+const fs = require('fs').promises;
+const path = require('path');
 const { v4: uuidv4 } = require("uuid");
-const drinksController = require('./drinksController');
+const drinksController = require('./drinksController'); // Importování drinksControlleru pro kontrolu použití ingredience
 
-let ingredients = [
-  { name: "absinth", id: "1" },
-  { name: "amaretto", id: "2" },
-  { name: "apple juice", id: "3" },
-  { name: "baileys", id: "4" },
-  { name: "becherovka", id: "5" },
-  { name: "bourbon", id: "6" },
-  { name: "campari", id: "7" },
-  { name: "cinzano", id: "8" },
-  { name: "coca cola", id: "9" },
-  { name: "cognac", id: "10" },
-  { name: "cranberry juice", id: "11" },
-  { name: "curaccao", id: "12" },
-  { name: "fernet", id: "13" },
-  { name: "gin", id: "14" },
-  { name: "grenadine", id: "15" },
-  { name: "ice", id: "16" },
-  { name: "jaegermeister", id: "17" },
-  { name: "lemon juice", id: "18" },
-  { name: "lime", id: "19" },
-  { name: "mojito", id: "20" },
-  { name: "orange juice", id: "21" },
-  { name: "pepper", id: "22" },
-  { name: "pineapple juice", id: "23" },
-  { name: "redbull", id: "100" },
-  { name: "rum dark", id: "24" },
-  { name: "rum white", id: "25" },
-  { name: "salt", id: "26" },
-  { name: "sect", id: "27" },
-  { name: "strawberry juice", id: "28" },
-  { name: "stroh", id: "29" },
-  { name: "sugar", id: "31" },
-  { name: "tatra tea", id: "30" },
-  { name: "tequila", id: "32" },
-  { name: "vodka", id: "33" },
-  { name: "whiskey", id: "34" },
-  { name: "wine red", id: "35" },
-  { name: "wine white", id: "36" },
-]; // In-memory databáze pro ingredience
+// path - ingredients.json
+const ingredientsFilePath = path.join(__dirname, '..', 'data', 'ingredients.json');
 
+// funkce pro čtení a psaní do JSON
+async function readIngredients() {
+    try {
+        const data = await fs.readFile(ingredientsFilePath, 'utf-8');
+        return JSON.parse(data);
+    } catch (error) {
+        throw new Error(`Could not read ingredients data: ${error}`);
+    }
+}
+
+async function writeIngredients(ingredients) {
+    try {
+        await fs.writeFile(ingredientsFilePath, JSON.stringify(ingredients, null, 2), 'utf-8');
+    } catch (error) {
+        throw new Error(`Could not write ingredients data: ${error}`);
+    }
+}
+
+// Validation function for individual ingredients
 const validateSoloIngredient = (ingredient) => {
     const { name } = ingredient;
     if (!name || typeof name !== 'string') {
         return 'Invalid name';
     }
+
     // kontrola unikátnosti jména
-    const isNameUnique = !ingredients.some(existingIngredient => existingIngredient.name.toLowerCase() === name.toLowerCase());
-    if (!isNameUnique) {
-        return `An ingredient with the name "${name}" already exists.`;
-    }
-    return null;
-}; // Při tvorbě samotné ingredience mimo recept má ingredience jen jeden požadovaný atribut - jméno + se přidá id
+    return readIngredients().then((ingredients) => {
+        const isNameUnique = !ingredients.some(existingIngredient => existingIngredient.name.toLowerCase() === name.toLowerCase());
+        if (!isNameUnique) {
+            return `An ingredient with the name "${name}" already exists.`;
+        }
+        return null;
+    });
+};
 
+// Upravený ingredientsController pro JSON perzistenci
 const ingredientsController = {
-    getAllIngredients: (req, res) => {
-        res.json(ingredients);
+    getAllIngredients: async (req, res) => {
+        try {
+            const ingredients = await readIngredients();
+            res.status(200).json(ingredients);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
     },
-    getIngredientById: (req, res) => {
-        const ingredient = ingredients.find(i => i.id === req.params.id);
-        if (!ingredient) return res.status(404).send('Ingredient not found');
-        res.json(ingredient);
-    },
-    createIngredient: (req, res) => {
-        const validationError = validateSoloIngredient(req.body);
-        if (validationError) return res.status(400).send(validationError);
 
-        const newIngredient = { id: uuidv4(), ...req.body }; // Přidat ID
-        ingredients.push(newIngredient);
-        res.status(201).json(newIngredient);
+    getIngredientById: async (req, res) => {
+        try {
+            const ingredients = await readIngredients();
+            const ingredient = ingredients.find(i => i.id === req.params.id);
+            if (!ingredient) {
+                return res.status(404).send('Ingredient not found');
+            }
+            res.json(ingredient);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
     },
-    deleteIngredient: (req, res) => {
-        const ingredientId = req.params.id;
-        const ingredientIndex = ingredients.findIndex(ingredient => ingredient.id === ingredientId);
-    
-        if (ingredientIndex === -1) {
-            return res.status(404).send('Ingredient not found');
+
+    createIngredient: async (req, res) => {
+        try {
+            const newIngredient = { ...req.body, id: uuidv4() };
+            const validationError = await validateSoloIngredient(newIngredient);
+            if (validationError) {
+                return res.status(400).send(validationError);
+            }
+            const ingredients = await readIngredients();
+            ingredients.push(newIngredient);
+            await writeIngredients(ingredients);
+            res.status(201).json(newIngredient);
+        } catch (error) {
+            res.status(500).send(error.message);
         }
-    
-        // Získat jméno ingredience
-        const ingredientName = ingredients[ingredientIndex].name;
-    
-        // Kontrola použití ingredience v existujícím drinku
-        if (drinksController.isIngredientUsed(ingredientName)) {
-            return res.status(400).send('Cannot delete this ingredient as it is used in one or more drinks.');
+    },
+
+    deleteIngredient: async (req, res) => {
+        try {
+            const ingredientId = req.params.id;
+            const ingredients = await readIngredients();
+            const ingredientIndex = ingredients.findIndex(ingredient => ingredient.id === ingredientId);
+
+            if (ingredientIndex === -1) {
+                return res.status(404).send('Ingredient not found');
+            }
+
+            // Získat jméno ingredience
+            const ingredientName = ingredients[ingredientIndex].name;
+
+            // Kontrola použití ingredience v existujícím drinku
+            if (await drinksController.isIngredientUsed(ingredientName)) {
+                return res.status(400).send('Cannot delete this ingredient as it is used in one or more drinks.');
+            }
+
+            // Když ingredience není použita, smaže se
+            ingredients.splice(ingredientIndex, 1);
+            await writeIngredients(ingredients);
+            res.status(204).send('Ingredient deleted');
+        } catch (error) {
+            res.status(500).send(error.message);
         }
-    
-        // Když ingredience není použita, smaže se
-        ingredients.splice(ingredientIndex, 1);
-        res.status(204).send('Ingredient deleted');
-    }
+    },
 };
 
 module.exports = ingredientsController;
