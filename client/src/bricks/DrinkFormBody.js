@@ -55,7 +55,7 @@ function DrinkFormBody(props) {
             type="text"
             value={props.formData.procedure}
             onChange={(e) => props.setField("procedure", e.target.value)}
-            maxLength={100}
+            maxLength={500}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -112,6 +112,10 @@ function DrinkFormBody(props) {
                 <option value={"teaspoon"}>teaspoon</option>
                 <option value={"ml"}>ml</option>
                 <option value={"cube"}>cube</option>
+                <option value={"slice"}>slice</option>
+                <option value={"dash"}>dash</option>
+                <option value={"tablespoon"}>tablespoon</option>
+                <option value={"splash"}>splash</option>
               </Form.Select>
             </Form.Group>
           </Row>
