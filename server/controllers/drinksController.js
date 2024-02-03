@@ -1,220 +1,188 @@
+const fs = require('fs').promises;
+const path = require('path');
 const { v4: uuidv4 } = require("uuid");
+const ingredientsFilePath = path.join(__dirname, '..', 'data', 'ingredients.json');
 
-let drinks = [
-  {
-    author: "Milan Novotný",
-    name: "Acapulco rink",
-    type: "long",
-    procedure:
-      "Add ice to shaker with all ingredients. Shake thoroughly and long. Then pour through a strainer into pre-chilled cocktail glasses. Finally, garnish with lime zest",
-    id: "8fd09f3f5e2b4l23",
-    ingredients: [
-      { name: "vodka", amount: "30", unit: "ml", id: "30" },
-      { name: "sekt", amount: "30", unit: "ml", id: "24" },
-      { name: "led", amount: "3", unit: "cube", id: "19" },
-      { name: "", amount: "", unit: "" },
-      { name: "", amount: "", unit: "" },
-      { name: "", amount: "", unit: "" },
-    ],
-  },
-  {
-    author: "Martin Smith",
-    name: "Lemon Drop",
-    type: "short",
-    procedure:
-      "Add all ingredients to a shaker with ice. Wipe the outer edge of the glass with lemon and sprinkle with sugar. Strain and carefully pour the contents of the shaker into the glass.",
-    id: "8fdq9f3f5e2b432et",
-    ingredients: [
-      { name: "vodka", amount: "30", unit: "ml", id: "33" },
-      { name: "lemon juice", amount: "3", unit: "ml", id: "18" },
-      { name: "redbull", amount: "150", unit: "ml", id: "100" },
-      { name: "", amount: "", unit: "" },
-      { name: "", amount: "", unit: "" },
-      { name: "", amount: "", unit: "" },
-    ],
-  },
-  {
-    author: "John Bacardi",
-    name: "Long Island",
-    type: "short",
-    procedure:
-      "Gradually pour all the ingredients into the glass and add ice. Finally, pour cola and garnish with lemon wedges.",
-    id: "8fd09f3f5emb432x",
-    ingredients: [
-      { name: "gin", amount: "20", unit: "ml", id: "14" },
-      { name: "white rum", amount: "20", unit: "ml", id: "25" },
-      { name: "vodka", amount: "20", unit: "ml", id: "33" },
-      { name: "lemon juice", amount: "20", unit: "ml", id: "18" },
-      { name: "coca cola", amount: "200", unit: "ml", id: "9" },
-      { name: "", amount: "", unit: "" },
-    ],
-  },
-  {
-    author: "Muela Hanioy",
-    name: "Mai Tai",
-    type: "short",
-    procedure:
-      "Add all ingredients and ice except dark rum and grenadine to a shaker. Shake briefly and pour into a glass. Finally, add ice and dark rum with grenadine and garnish.",
-    id: "8fd09y3f5e2b432p",
-    ingredients: [
-      { name: "curaccao", amount: "50", unit: "ml", id: "12" },
-      { name: "rum white", amount: "50", unit: "ml", id: "25" },
-      { name: "rum dark", amount: "50", unit: "ml", id: "24" },
-      { name: "lime", amount: "30", unit: "ml", id: "19" },
-      { name: "", amount: "", unit: "" },
-      { name: "", amount: "", unit: "" },
-    ],
-  },
-  {
-    author: "George Clooney",
-    name: "Manhattan Drink",
-    type: "short",
-    procedure:
-      "Put all the ingredients in a shaker. After mixing, pour through a strainer into a cocktail glass. Finally, garnish with a cherry and serve without a straw.",
-    id: "8fd09n3f5e2b432q",
-    ingredients: [
-      { name: "whiskey", amount: "50", unit: "ml", id: "34" },
-      { name: "bourbon", amount: "50", unit: "ml", id: "6" },
-      { name: "ice", amount: "3", unit: "cube", id: "16" },
-      { name: "", amount: "", unit: "" },
-      { name: "", amount: "", unit: "" },
-      { name: "", amount: "", unit: "" },
-    ],
-  },
-  {
-    author: "John Bacardi younger",
-    name: "Long Stand",
-    type: "long",
-    procedure:
-      "Pour all the ingredients into the glass and add ice. Finally, pour cola and garnish with lemon wedges. Cheers!",
-    id: "8fd09f3f5emb432l",
-    ingredients: [
-      { name: "gin", amount: "20", unit: "ml", id: "14" },
-      { name: "white rum", amount: "20", unit: "ml", id: "25" },
-      { name: "vodka", amount: "20", unit: "ml", id: "33" },
-      { name: "lemon juice", amount: "20", unit: "ml", id: "18" },
-      { name: "coca cola", amount: "200", unit: "ml", id: "9" },
-      { name: "", amount: "", unit: "" },
-    ],
-  },
-  {
-    author: "Marria Bloom",
-    name: "Manhattan Squeeze",
-    type: "short",
-    procedure:
-      "Put all the ingredients in a shaker. After mixing, pour through a strainer into a cocktail glass. Finally, garnish with a cherry and serve with a big huge  smile.",
-    id: "8fd09n3f5e2b432m",
-    ingredients: [
-      { name: "whiskey", amount: "50", unit: "ml", id: "34" },
-      { name: "bourbon", amount: "50", unit: "ml", id: "6" },
-      { name: "ice", amount: "3", unit: "cube", id: "16" },
-      { name: "", amount: "", unit: "" },
-      { name: "", amount: "", unit: "" },
-      { name: "", amount: "", unit: "" },
-    ],
-  },
-  {
-    author: "Mike Clooney",
-    name: "Bahama beach",
-    type: "short",
-    procedure:
-      "Put all the ingredients in a shaker. Pour through a strainer into a cocktail glass. Finally, garnish with a cherry and serve without a straw. There you go!",
-    id: "8fd09n3f5e2b432y",
-    ingredients: [
-      { name: "whiskey", amount: "50", unit: "ml", id: "34" },
-      { name: "bourbon", amount: "50", unit: "ml", id: "6" },
-      { name: "ice", amount: "3", unit: "cube", id: "16" },
-      { name: "", amount: "", unit: "" },
-      { name: "", amount: "", unit: "" },
-      { name: "", amount: "", unit: "" },
-    ],
-  },
-  {
-    author: "George Black",
-    name: "Manhattan Street",
-    type: "long",
-    procedure:
-      "Put all the ingredients in a shaker. After mixing, pour through a strainer into a cocktail glass.",
-    id: "8fd09n3f5e2b432a",
-    ingredients: [
-      { name: "whiskey", amount: "50", unit: "ml", id: "34" },
-      { name: "bourbon", amount: "50", unit: "ml", id: "6" },
-      { name: "ice", amount: "3", unit: "cube", id: "16" },
-      { name: "", amount: "", unit: "" },
-      { name: "", amount: "", unit: "" },
-      { name: "", amount: "", unit: "" },
-    ],
-  },
-]; // in-memory databáze
+async function readIngredients() {
+    try {
+        const data = await fs.readFile(ingredientsFilePath, 'utf-8');
+        return JSON.parse(data);
+    } catch (error) {
+        throw new Error(`Could not read ingredients data: ${error}`);
+    }
+}
+
+// path - drinks.json file
+const drinksFilePath = path.join(__dirname, '..', 'data', 'drinks.json');
+
+// Helper funkce for pro čtení a psaní dat drinků
+async function readDrinks() {
+    try {
+        const data = await fs.readFile(drinksFilePath, 'utf-8');
+        return JSON.parse(data);
+    } catch (error) {
+        throw new Error(`Could not read drinks data: ${error}`);
+    }
+}
+
+async function writeDrinks(drinks) {
+    try {
+        await fs.writeFile(drinksFilePath, JSON.stringify(drinks, null, 2), 'utf-8');
+    } catch (error) {
+        throw new Error(`Could not write drinks data: ${error}`);
+    }
+}
 
 const validateIngredient = (ingredient) => {
-  const { name, amount, unit } = ingredient;
-  if (!name || typeof name !== "string") return "Invalid ingredient name";
-  if (!amount || typeof amount !== "string") return "Invalid ingredient amount";
-  if (!unit || typeof unit !== "string") return "Invalid ingredient unit";
-  return null;
-}; // validace ingredience přidané do receptu včetně vlastností
+    const { name, amount, unit } = ingredient;
+    if (!name || typeof name !== "string") return "Invalid ingredient name";
+    if (typeof amount !== "number" || amount <= 0) return "Invalid ingredient amount";
+    if (!unit || typeof unit !== "string") return "Invalid ingredient unit";
+    return null; // null když není chyba - úspěšná validace
+};
 
 const validateDrink = (drink) => {
-  const { name, author, type, procedure, ingredients } = drink;
-  if (!name || typeof name !== "string") return "Invalid name";
-  if (!author || typeof author !== "string") return "Invalid author";
-  if (!type || typeof type !== "string") return "Invalid type";
-  if (!procedure || typeof procedure !== "string") return "Invalid procedure";
-  if (!Array.isArray(ingredients)) return "Invalid ingredients - not an array";
-  if (ingredients.length < 2)
-    return "Invalid ingredients - at least two required";
-  return null;
-}; // validace atributů receptu včetně validace atributu ingredience
+    const { name, author, type, procedure, ingredients } = drink;
+    if (!name || typeof name !== "string") return "Invalid name";
+    if (!author || typeof author !== "string") return "Invalid author";
+    if (!type || typeof type !== "string") return "Invalid type";
+    if (!procedure || typeof procedure !== "string") return "Invalid procedure";
+    if (!Array.isArray(ingredients)) return "Invalid ingredients - not an array";
 
+    // Vyfiltrovat nevyplněné ingredience
+    const nonEmptyIngredients = ingredients.filter(ingredient => {
+        return ingredient.name || ingredient.amount || ingredient.unit;
+    });
+
+    // Musí být aspoň 2 neprázdné ingredience
+    if (nonEmptyIngredients.length < 2) {
+        return "Invalid ingredients - at least two required";
+    }
+
+    // Validace každé neprázdné ingredience
+    for (const ingredient of nonEmptyIngredients) {
+        const ingredientValidationError = validateIngredient(ingredient);
+        if (ingredientValidationError) return ingredientValidationError;
+    }
+
+    return null; // null když drink projde validací
+};
+
+ // validace atributů receptu včetně validace atributu ingredience
+
+// upravený drinksController pro JSON perzistenci
 const drinksController = {
-  getAllDrinks: (req, res) => {
-    res.status(200).json(drinks);
-  },
+    getAllDrinks: async (req, res) => {
+        try {
+            const drinks = await readDrinks();
+            res.status(200).json(drinks);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    },
 
-  getDrinkById: (req, res) => {
-    const drink = drinks.find((d) => d.id === req.params.id);
-    if (!drink) return res.status(404).send("Drink not found");
-    res.json(drink);
-  },
+    getDrinkById: async (req, res) => {
+        try {
+            const drinks = await readDrinks();
+            const drink = drinks.find(d => d.id === req.params.id);
+            if (!drink) {
+                return res.status(404).send("Drink not found");
+            }
+            res.json(drink);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    },
 
-  createDrink: (req, res) => {
-    const newDrink = { ...req.body, id: uuidv4() }; // Přidat ID
-    const validationError = validateDrink(newDrink);
-    if (validationError) return res.status(400).send(validationError);
+    createDrink: async (req, res) => {
+        try {
+            const drinks = await readDrinks();
+            const ingredientsData = await readIngredients();
+    
+            const newDrink = { ...req.body, id: uuidv4() };
+    
+            // ke každé vybrané ingredienci přiřadit její existující id
+            // uložit amount jako číslo
+            newDrink.ingredients = newDrink.ingredients.map(ingredient => {
+                const foundIngredient = ingredientsData.find(i => i.name === ingredient.name);
+                return {
+                    ...ingredient,
+                    id: foundIngredient ? foundIngredient.id : null, // přiřadit id nebo null když není
+                    amount: Number(ingredient.amount) // převést ID na číslo
+                };
+            });
+    
+            const validationError = validateDrink(newDrink);
+            if (validationError) {
+                return res.status(400).send(validationError);
+            }
+            drinks.push(newDrink);
+            await writeDrinks(drinks);
+            res.status(201).json(newDrink);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    },    
 
-    drinks.push(newDrink);
-    res.status(201).json(newDrink);
-  },
+    updateDrink: async (req, res) => {
+        try {
+            const drinks = await readDrinks();
+            const drinkIndex = drinks.findIndex(d => d.id === req.params.id);
+            if (drinkIndex === -1) {
+                return res.status(404).send("Drink not found");
+            }
+    
+            // Převod případných amount stringů na number
+            let updatedDrink = { ...drinks[drinkIndex], ...req.body };
+    
+            if (updatedDrink.ingredients) {
+                updatedDrink.ingredients = updatedDrink.ingredients.map(ingredient => ({
+                    ...ingredient,
+                    amount: Number(ingredient.amount)
+                }));
+            }
+    
+            const validationError = validateDrink(updatedDrink);
+            if (validationError) {
+                return res.status(400).send(validationError);
+            }
+            drinks[drinkIndex] = updatedDrink;
+            await writeDrinks(drinks);
+            res.json(updatedDrink);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    },
 
-  updateDrink: (req, res) => {
-    const drinkIndex = drinks.findIndex((d) => d.id === req.params.id);
-    if (drinkIndex === -1) return res.status(404).send("Drink not found");
+    deleteDrink: async (req, res) => {
+        try {
+            const drinks = await readDrinks();
+            const drinkIndex = drinks.findIndex(d => d.id === req.params.id);
+            if (drinkIndex === -1) {
+                return res.status(404).send("Drink not found");
+            }
+            drinks.splice(drinkIndex, 1);
+            await writeDrinks(drinks);
+            res.status(204).send();
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    },
 
-    const updatedDrink = { ...drinks[drinkIndex], ...req.body };
-    const validationError = validateDrink(updatedDrink);
-    if (validationError) return res.status(400).send(validationError);
-
-    drinks[drinkIndex] = updatedDrink;
-    res.json(updatedDrink);
-  },
-
-  deleteDrink: (req, res) => {
-    const drinkIndex = drinks.findIndex((d) => d.id === req.params.id);
-    if (drinkIndex === -1) return res.status(404).send("Drink not found");
-
-    drinks.splice(drinkIndex, 1);
-    res.status(204).send();
-  },
-    // ingredientsController - deleteIngredient, kontrola použití ingredience
-  isIngredientUsed: (ingredientName) => {
-    return drinks.some(drink =>
-      drink.ingredients.some(ingredient =>
-        ingredient.name.toLowerCase() === ingredientName.toLowerCase() &&
-        ingredient.name !== "" // Zvažovat pouze ingredience, které mají název
-      )
-    );
-  }
+    isIngredientUsed: async (ingredientName) => {
+        try {
+            const drinks = await readDrinks();
+            return drinks.some(drink =>
+                drink.ingredients.some(ingredient =>
+                    ingredient.name.toLowerCase() === ingredientName.toLowerCase() &&
+                    ingredient.name !== ""
+                )
+            );
+        } catch (error) {
+            console.error(error);
+            throw new Error(`Error checking if ingredient is used: ${error}`);
+        }
+    },
 };
 
 module.exports = drinksController;
