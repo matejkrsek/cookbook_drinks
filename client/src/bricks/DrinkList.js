@@ -160,6 +160,7 @@ function DrinkList() {
           const newList = [...drinkList];
           newList.push(dataToServer);
           setDrinkList(newList);
+          window.location.reload();
           break;
         }
         case 404: {
